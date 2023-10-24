@@ -1,6 +1,7 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import NavBar from "./components/Navbar";
 import Homepage from "./routes/Homepage";
+import AuthContext from "./context/authContext";
 
 const router = createBrowserRouter([
   {
@@ -16,8 +17,10 @@ type AppProps = {
 function App({ showNavbar }: AppProps) {
   return (
     <>
-      {showNavbar && <NavBar />}
-      <RouterProvider router={router} />
+      <AuthContext>
+        {showNavbar && <NavBar />}
+        <RouterProvider router={router} />
+      </AuthContext>
     </>
   );
 }

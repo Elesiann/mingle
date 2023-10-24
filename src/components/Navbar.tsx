@@ -2,7 +2,8 @@ import styled from "styled-components";
 import { SignIn, CaretDown } from "@phosphor-icons/react";
 import { colors } from "../styles/colors";
 import RegisterSidebar from "./layouts/RegisterSidebar";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { AuthContext } from "../context/authContext";
 
 // the categories will be
 // gold blend
@@ -16,7 +17,10 @@ import { useState } from "react";
 // descafeinados
 
 const NavBar = () => {
+  const authContext = useContext(AuthContext);
   const [openLogin, setOpenLogin] = useState(false);
+
+  console.log(authContext);
 
   return (
     <>
