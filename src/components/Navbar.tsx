@@ -1,42 +1,68 @@
 import styled from "styled-components";
-import Container from "./Container";
 import { SignIn, CaretDown } from "@phosphor-icons/react";
 import { colors } from "../styles/colors";
+import RegisterSidebar from "./layouts/RegisterSidebar";
+import { useState } from "react";
+
+// the categories will be
+// gold blend
+// combos
+// platinum blend
+// colombia
+// peru
+// costa rica
+// brasil
+// guatemala
+// descafeinados
 
 const NavBar = () => {
+  const [openLogin, setOpenLogin] = useState(false);
+
   return (
-    <Container>
-      <NavContainer>
-        <NavList>
-          <NavItem>
-            <NavLink href="#">Home</NavLink>
-          </NavItem>
-          <NavItem>
-            <NavLink href="#">Categorias</NavLink>
-            <CaretDown color={colors.navajo} size={18} />
-          </NavItem>
-          <NavItem>
-            <NavLink href="/promo">Promoções</NavLink>
-          </NavItem>
-          <NavItem>
-            <NavLink href="#">Onde estamos</NavLink>
-          </NavItem>
-        </NavList>
-        <LoginContainer>
-          <NavLink href="#">Entrar</NavLink>
-          <SignIn color={colors.navajo} width={24} height={24} />
-        </LoginContainer>
-      </NavContainer>
-    </Container>
+    <>
+      <CustomContainer>
+        <NavContainer>
+          <NavList>
+            <NavItem>
+              <NavLink href="#">Home</NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink href="#">Categorias</NavLink>
+              <CaretDown color={colors.navajo} size={18} />
+            </NavItem>
+            <NavItem>
+              <NavLink href="/promo">Promoções</NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink href="#">Onde estamos</NavLink>
+            </NavItem>
+          </NavList>
+          <LoginContainer onClick={() => setOpenLogin(true)}>
+            <NavLink href="#">Entrar</NavLink>
+            <SignIn color={colors.navajo} width={24} height={24} />
+          </LoginContainer>
+        </NavContainer>
+      </CustomContainer>
+      <RegisterSidebar
+        onOutsideClick={() => setOpenLogin(false)}
+        showSidebar={openLogin}
+        callback={() => setOpenLogin(false)}
+      />
+    </>
   );
 };
 
-const NavContainer = styled.nav`
+const CustomContainer = styled.div`
   position: sticky;
+  top: 2rem;
+  z-index: 9;
+  display: flex;
+  justify-content: center;
+`;
+
+const NavContainer = styled.nav`
   max-width: 1200px;
   width: 100%;
-  margin: 2rem;
-  z-index: 1;
   background-color: var(--firefly);
   display: flex;
   justify-content: space-between;
