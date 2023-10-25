@@ -1,18 +1,26 @@
-import { styled } from "styled-components";
-import { useState } from "react";
 import { X } from "@phosphor-icons/react";
+import { useState, useEffect } from "react";
+import { styled } from "styled-components";
 import RegisterForm from "./RegisterForm";
 import SocialLoginForm from "./SocialLoginForm";
-
+import { User } from "firebase/auth";
+import { isEmpty } from "lodash";
+import { Spinner } from "@chakra-ui/spinner";
+import { colors } from "../../styles/colors";
 interface SidebarProps {
   showSidebar: boolean;
-  callback?: () => void;
-  onOutsideClick: () => void;
+  callback: () => void;
+  user: User;
 }
 
 const RegisterSidebar = (props: SidebarProps) => {
   const [formState, setFormState] = useState("signin");
+  const [isLoading, setIsLoading] = useState(false);
   const isRegister = formState === "register";
+
+  useEffect(() => {
+    isLoading === false && !isEmpty(props.user) && props.callback();
+  }, [!isLoading]);
 
   const handleFormState = () => {
     setFormState(!isRegister ? "register" : "signin");
@@ -47,13 +55,27 @@ const RegisterSidebar = (props: SidebarProps) => {
             <h2>Fechar</h2>
           </Close>
         </Signin>
-        <Content>
-          <FormContainer>
-            <RegisterForm type={formState} />
-            <SocialLoginForm />
-          </FormContainer>
-          <div>{renderToggleText()}</div>
-        </Content>
+        {!isLoading ? (
+          <Content>
+            <FormContainer>
+              <RegisterForm
+                setIsLoading={(v) => setIsLoading(v)}
+                type={formState}
+              />
+              <SocialLoginForm />
+            </FormContainer>
+            <div>{renderToggleText()}</div>
+          </Content>
+        ) : (
+          <SpinnerContainer>
+            <Spinner
+              speed="0.5s"
+              boxSize="54"
+              size="xl"
+              color={colors.firefly}
+            />
+          </SpinnerContainer>
+        )}
       </Container>
     </>
   );
@@ -121,6 +143,14 @@ const Close = styled.div`
   svg {
     margin-top: 4.5px;
   }
+`;
+
+const SpinnerContainer = styled.div`
+  display: flex;
+  height: 100%;
+  width: 100%;
+  justify-content: center;
+  margin-top: 5rem;
 `;
 
 export default RegisterSidebar;

@@ -1,8 +1,11 @@
+import { CaretDown, SignIn, UserCircleGear } from "@phosphor-icons/react";
+import { isEmpty } from "lodash";
+import { useState, useContext } from "react";
 import styled from "styled-components";
-import { SignIn, CaretDown } from "@phosphor-icons/react";
 import { colors } from "../styles/colors";
+import { capitalizeFirstName, getFromLocalStorage } from "../utils/utils";
 import RegisterSidebar from "./layouts/RegisterSidebar";
-import { useContext, useState } from "react";
+import UserSidebar from "./layouts/UserSidebar";
 import { AuthContext } from "../context/authContext";
 
 // the categories will be
@@ -17,40 +20,72 @@ import { AuthContext } from "../context/authContext";
 // descafeinados
 
 const NavBar = () => {
+  const [openNavbar, setOpenNavbar] = useState<"user" | "login" | "">("");
+  const user = getFromLocalStorage("user");
   const authContext = useContext(AuthContext);
-  const [openLogin, setOpenLogin] = useState(false);
 
-  console.log(authContext);
+  const renderUserData = () => {
+    return (
+      <UserName onClick={() => setOpenNavbar("user")}>
+        {capitalizeFirstName(user.displayName)}
+        <UserCircleGear size={32} />
+      </UserName>
+    );
+  };
+
+  const renderLoginData = () => {
+    return (
+      <LoginContainer onClick={() => setOpenNavbar("login")}>
+        <NavLink href="#">Entrar</NavLink>
+        <SignIn color={colors.navajo} width={24} height={24} />
+      </LoginContainer>
+    );
+  };
+
+  const renderLoginOrUser = () => {
+    return <>{isEmpty(user) ? renderLoginData() : renderUserData()}</>;
+  };
+
+  const renderNavLinksList = () => {
+    return (
+      <NavList>
+        <NavItem>
+          <NavLink href="#">Home</NavLink>
+        </NavItem>
+        <NavItem>
+          <NavLink href="#">Categorias</NavLink>
+          <CaretDown color={colors.navajo} size={18} />
+        </NavItem>
+        <NavItem>
+          <NavLink href="/promo">Promoções</NavLink>
+        </NavItem>
+        <NavItem>
+          <NavLink href="#">Onde estamos</NavLink>
+        </NavItem>
+      </NavList>
+    );
+  };
 
   return (
     <>
       <CustomContainer>
         <NavContainer>
-          <NavList>
-            <NavItem>
-              <NavLink href="#">Home</NavLink>
-            </NavItem>
-            <NavItem>
-              <NavLink href="#">Categorias</NavLink>
-              <CaretDown color={colors.navajo} size={18} />
-            </NavItem>
-            <NavItem>
-              <NavLink href="/promo">Promoções</NavLink>
-            </NavItem>
-            <NavItem>
-              <NavLink href="#">Onde estamos</NavLink>
-            </NavItem>
-          </NavList>
-          <LoginContainer onClick={() => setOpenLogin(true)}>
-            <NavLink href="#">Entrar</NavLink>
-            <SignIn color={colors.navajo} width={24} height={24} />
-          </LoginContainer>
+          {renderNavLinksList()}
+          {renderLoginOrUser()}
         </NavContainer>
       </CustomContainer>
       <RegisterSidebar
-        onOutsideClick={() => setOpenLogin(false)}
-        showSidebar={openLogin}
-        callback={() => setOpenLogin(false)}
+        user={user}
+        showSidebar={openNavbar === "login"}
+        callback={() => setOpenNavbar("")}
+      />
+      <UserSidebar
+        user={user}
+        showSidebar={openNavbar === "user"}
+        callbacks={{
+          close: () => setOpenNavbar(""),
+          logout: () => authContext.logout()
+        }}
       />
     </>
   );
@@ -122,7 +157,7 @@ const LoginContainer = styled.div`
   align-items: center;
   gap: 1rem;
   cursor: pointer;
-  padding: 0.75rem;
+  padding: 0.5rem;
   border-radius: 4px;
 
   &:hover {
@@ -131,6 +166,27 @@ const LoginContainer = styled.div`
       color: var(--babyPowder);
       fill: var(--babyPowder);
     }
+  }
+`;
+
+const UserName = styled.div`
+  display: flex;
+  align-items: center;
+  color: var(--navajo);
+  font-family: var(--secondary-font);
+  font-size: 1.1rem;
+  font-weight: regular;
+  padding: 0.5rem;
+  cursor: pointer;
+
+  svg {
+    margin-left: 0.5rem;
+  }
+
+  &:hover {
+    border-radius: 4px;
+    background-color: var(--gunmetal);
+    color: var(--babyPowder);
   }
 `;
 

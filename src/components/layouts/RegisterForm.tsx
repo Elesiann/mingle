@@ -1,7 +1,8 @@
+import { useContext } from "react";
 import { useForm } from "react-hook-form";
-import { handleLogin, handleRegister } from "../../middleware/auth";
 import Input from "../Input";
 import InputButton from "../InputButton";
+import { AuthContext } from "../../context/authContext";
 
 export interface RegisterInputs {
   name?: string;
@@ -12,9 +13,12 @@ export interface RegisterInputs {
 
 interface RegisterFormProps {
   type: string;
+  setIsLoading: (value: boolean) => void;
 }
 
 export default function RegisterForm(props: RegisterFormProps) {
+  const authContext = useContext(AuthContext);
+
   const {
     register,
     handleSubmit,
@@ -28,8 +32,16 @@ export default function RegisterForm(props: RegisterFormProps) {
     }
   });
 
+  const handleSubmitForm = async (data: RegisterInputs) => {
+    props.setIsLoading(true);
+    props.type === "register"
+      ? await authContext.register(data)
+      : await authContext.login(data);
+    props.setIsLoading(false);
+  };
+
   const onSubmit = (data: RegisterInputs) => {
-    props.type === "register" ? handleRegister(data) : handleLogin(data);
+    handleSubmitForm(data);
   };
 
   return (
