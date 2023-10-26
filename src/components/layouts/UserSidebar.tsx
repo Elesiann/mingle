@@ -35,7 +35,7 @@ const UserSidebar = (props: SidebarProps) => {
   return (
     <>
       {props.showSidebar && <Mask />}
-      <Container show={props.showSidebar}>
+      <Container $show={props.showSidebar}>
         <UserData>
           <h2>Olá, {capitalizeFirstName(props.user.displayName || "")}</h2>
           <Close onClick={props.callbacks.close}>
@@ -51,11 +51,11 @@ const UserSidebar = (props: SidebarProps) => {
   );
 };
 
-const Container = styled.div<{ show: boolean }>`
+const Container = styled.div<{ $show: boolean }>`
   z-index: 11;
   top: 0;
   position: fixed;
-  right: ${(props) => (props.show ? "0" : "-400px")};
+  right: ${(props) => (props.$show ? "0" : "-400px")};
   width: 400px;
   height: 100%;
   background-color: var(--bgWhite);

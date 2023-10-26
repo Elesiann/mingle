@@ -75,15 +75,17 @@ const Product = (product: ProductProps) => {
           alt=""
         />
         <ProductOptionsContainer>
-          <ProductOptions show={showOptions}>
+          <ProductOptions $show={showOptions}>
             <>
               <Tooltip id={randomID} />
               <CartIcon
-                isInCart={product.isInCart}
-                heartAnimation={animations.cartAnimation}
+                $isincart={product.isInCart}
+                $animation={animations.cartAnimation}
                 onClick={() => handleAnimation("cart")}
                 data-tooltip-id={randomID}
-                data-tooltip-content="Adicionar ao carrinho"
+                data-tooltip-content={`${
+                  product.isInCart ? "Remover do " : "Adicionar ao"
+                } carrinho`}
                 data-tooltip-place="top"
                 size={24}
               />
@@ -100,11 +102,13 @@ const Product = (product: ProductProps) => {
             <>
               <Tooltip id={randomID} />
               <HeartIcon
-                isFavorite={product.isFavorite}
-                heartAnimation={animations.heartAnimation}
+                $isfavorite={product.isFavorite}
+                $animation={animations.heartAnimation}
                 onClick={() => handleAnimation("heart")}
                 data-tooltip-id={randomID}
-                data-tooltip-content="Favoritar"
+                data-tooltip-content={`${
+                  product.isFavorite ? "Remover dos" : "Adicionar aos"
+                } favoritos`}
                 data-tooltip-place="top"
                 size={24}
               />
@@ -162,13 +166,13 @@ const ProductOptionsContainer = styled.div`
   justify-content: center;
 `;
 
-const ProductOptions = styled.div<{ show: boolean }>`
+const ProductOptions = styled.div<{ $show: boolean }>`
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-evenly;
   position: absolute;
-  bottom: ${(props) => (props.show ? "1rem" : "-3rem")};
+  bottom: ${(props) => (props.$show ? "1rem" : "-3rem")};
   width: 60%;
   height: 3rem;
   background-color: var(--babyPowder);
@@ -186,14 +190,14 @@ const ProductOptions = styled.div<{ show: boolean }>`
 `;
 
 const CartIcon = styled(ShoppingCart)<{
-  isInCart?: boolean;
-  heartAnimation?: boolean;
+  $isincart: boolean;
+  $animation: boolean;
 }>`
   font-size: 150px;
-  color: ${(props) => props.isInCart && "var(--green)"};
+  color: ${(props) => props.$isincart && "var(--green)"};
 
   animation: ${(props) =>
-    props.heartAnimation &&
+    props.$animation &&
     css`
       ${beatAnimation} 0.5s alternate
     `};
@@ -201,14 +205,14 @@ const CartIcon = styled(ShoppingCart)<{
 `;
 
 const HeartIcon = styled(Heart)<{
-  isFavorite?: boolean;
-  heartAnimation?: boolean;
+  $isfavorite: boolean;
+  $animation: boolean;
 }>`
   font-size: 150px;
-  color: ${(props) => props.isFavorite && "var(--red)"};
+  color: ${(props) => props.$isfavorite && "var(--red)"};
 
   animation: ${(props) =>
-    props.heartAnimation &&
+    props.$animation &&
     css`
       ${beatAnimation} 0.5s alternate
     `};
