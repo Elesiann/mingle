@@ -19,6 +19,7 @@ const HomeHeader = () => {
           uppercase
           color={colors.firefly}
           textColor={colors.navajo}
+          // todo
           onClick={() => console.log("click")}
           text="Quero Conhecer"
         />

@@ -1,19 +1,66 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Heart, MagnifyingGlass, ShoppingCart } from "@phosphor-icons/react";
-import { styled } from "styled-components";
+import { css, keyframes, styled } from "styled-components";
 import { Tooltip } from "react-tooltip";
 
-interface ProductProps {
+export interface ProductProps {
   price: number;
   type: string;
   title: string;
   image: string;
+  id: number;
   secondImage?: string;
+  isFavorite: boolean;
+  isInCart: boolean;
+  onClickFavorite?: (product: ProductProps) => void;
+  onClickCart?: (product: ProductProps) => void;
 }
+
+const beatAnimation = keyframes`
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.5);
+  }
+`;
 
 const Product = (product: ProductProps) => {
   const [showOptions, setShowOptions] = useState(false);
+  const [animations, setAnimations] = useState({
+    heartAnimation: false,
+    cartAnimation: false
+  });
   const [randomID] = useState(String(Math.random()));
+
+  const handleAnimation = (animationType: "cart" | "heart") => {
+    const updatedAnimations = {
+      ...animations,
+      [`${animationType}Animation`]: true
+    };
+
+    setAnimations(updatedAnimations);
+
+    if (animationType === "heart") {
+      product.onClickFavorite && product.onClickFavorite(product);
+    } else if (animationType === "cart") {
+      product.onClickCart && product.onClickCart(product);
+    }
+  };
+
+  useEffect(() => {
+    const animationTimeout = setTimeout(() => {
+      const resetAnimations = {
+        ...animations,
+        heartAnimation: false,
+        cartAnimation: false
+      };
+      setAnimations(resetAnimations);
+    }, 500);
+
+    // Make sure to clear the timeout when the component unmounts to prevent memory leaks
+    return () => clearTimeout(animationTimeout);
+  }, [animations]);
 
   return (
     <Container>
@@ -31,7 +78,10 @@ const Product = (product: ProductProps) => {
           <ProductOptions show={showOptions}>
             <>
               <Tooltip id={randomID} />
-              <ShoppingCart
+              <CartIcon
+                isInCart={product.isInCart}
+                heartAnimation={animations.cartAnimation}
+                onClick={() => handleAnimation("cart")}
                 data-tooltip-id={randomID}
                 data-tooltip-content="Adicionar ao carrinho"
                 data-tooltip-place="top"
@@ -49,7 +99,10 @@ const Product = (product: ProductProps) => {
             </>
             <>
               <Tooltip id={randomID} />
-              <Heart
+              <HeartIcon
+                isFavorite={product.isFavorite}
+                heartAnimation={animations.heartAnimation}
+                onClick={() => handleAnimation("heart")}
                 data-tooltip-id={randomID}
                 data-tooltip-content="Favoritar"
                 data-tooltip-place="top"
@@ -130,6 +183,36 @@ const ProductOptions = styled.div<{ show: boolean }>`
   svg {
     cursor: pointer;
   }
+`;
+
+const CartIcon = styled(ShoppingCart)<{
+  isInCart?: boolean;
+  heartAnimation?: boolean;
+}>`
+  font-size: 150px;
+  color: ${(props) => props.isInCart && "var(--green)"};
+
+  animation: ${(props) =>
+    props.heartAnimation &&
+    css`
+      ${beatAnimation} 0.5s alternate
+    `};
+  transform-origin: center;
+`;
+
+const HeartIcon = styled(Heart)<{
+  isFavorite?: boolean;
+  heartAnimation?: boolean;
+}>`
+  font-size: 150px;
+  color: ${(props) => props.isFavorite && "var(--red)"};
+
+  animation: ${(props) =>
+    props.heartAnimation &&
+    css`
+      ${beatAnimation} 0.5s alternate
+    `};
+  transform-origin: center;
 `;
 
 export default Product;

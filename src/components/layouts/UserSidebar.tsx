@@ -1,4 +1,4 @@
-import { Heart, SignOut, X } from "@phosphor-icons/react";
+import { Heart, ShoppingCart, SignOut, X } from "@phosphor-icons/react";
 import { User } from "firebase/auth";
 import { styled } from "styled-components";
 import { capitalizeFirstName } from "../../utils/utils";
@@ -16,6 +16,10 @@ const UserSidebar = (props: SidebarProps) => {
   const renderUserCards = () => {
     return (
       <>
+        <UserCard href="/carrinho">
+          <ShoppingCart size={48} />
+          <h2>Seu carrinho</h2>
+        </UserCard>
         <UserCard href="/favoritos">
           <Heart size={48} />
           <h2>Seus favoritos</h2>
