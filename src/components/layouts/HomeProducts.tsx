@@ -1,10 +1,12 @@
-import { useContext } from "react";
+import { useContext, useState, useEffect } from "react";
 import { styled } from "styled-components";
 import { CartContext } from "../../context/cartContext";
 import Container from "../Container";
 import Product, { ProductProps } from "../Product";
+import { fetchFiles } from "../../constants/coffees";
 
 const HomeProducts = () => {
+  const [files, setFiles] = useState<ProductProps[]>([]);
   const cartContext = useContext(CartContext);
   const isFavorite = (id: number) =>
     cartContext.favorites.some((prod) => prod.id === id);
@@ -19,50 +21,29 @@ const HomeProducts = () => {
     cartContext.setCart(product);
   };
 
-  const items = [
-    {
-      id: 1,
-      price: 199,
-      type: "Café",
-      title: "Nome do café",
-      image: ""
-    },
-    {
-      id: 2,
-      price: 199,
-      type: "Café",
-      title: "Nome do café",
-      image: ""
-    },
-    {
-      id: 3,
-      price: 199,
-      type: "Café",
-      title: "Nome do café",
-      image: ""
-    },
-    {
-      id: 4,
-      price: 199,
-      type: "Café",
-      title: "Nome do café",
-      image: ""
-    }
-  ];
+  useEffect(() => {
+    const getFiles = async () => {
+      const files = await fetchFiles();
+
+      setFiles(files);
+    };
+    getFiles();
+  }, []);
 
   return (
     <Container>
       <Content>
-        {items.map((item) => (
-          <Product
-            key={item.id}
-            {...item}
-            onClickCart={handleAddToCart}
-            onClickFavorite={handleAddToFavorite}
-            isFavorite={isFavorite(item.id)}
-            isInCart={isInCart(item.id)}
-          />
-        ))}
+        {files &&
+          files.map((item) => (
+            <Product
+              key={item.id}
+              {...item}
+              onClickCart={handleAddToCart}
+              onClickFavorite={handleAddToFavorite}
+              isFavorite={isFavorite(item.id)}
+              isInCart={isInCart(item.id)}
+            />
+          ))}
       </Content>
     </Container>
   );

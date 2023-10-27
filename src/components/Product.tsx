@@ -68,12 +68,7 @@ const Product = (product: ProductProps) => {
         onMouseOver={() => setShowOptions(true)}
         onMouseLeave={() => setShowOptions(false)}
       >
-        <img
-          src={
-            "https://woodmart.xtemos.com/wp-content/uploads/2020/12/product-8-2-430x487.jpg"
-          }
-          alt=""
-        />
+        <img src={product.image} alt="" />
         <ProductOptionsContainer>
           <ProductOptions $show={showOptions}>
             <>
