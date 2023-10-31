@@ -3,10 +3,11 @@ import { styled } from "styled-components";
 import { CartContext } from "../../context/cartContext";
 import Container from "../Container";
 import Product, { ProductProps } from "../Product";
-import { fetchFiles } from "../../constants/coffees";
+import { api } from "../../libs/axios";
+import { ProductDTO } from "../../types/Product";
 
 const HomeProducts = () => {
-  const [files, setFiles] = useState<ProductProps[]>([]);
+  const [files, setFiles] = useState<ProductDTO[]>([]);
   const cartContext = useContext(CartContext);
   const isFavorite = (id: number) =>
     cartContext.favorites.some((prod) => prod.id === id);
@@ -22,12 +23,14 @@ const HomeProducts = () => {
   };
 
   useEffect(() => {
-    const getFiles = async () => {
-      const files = await fetchFiles();
-
-      setFiles(files);
+    const getProducts = async () => {
+      await api
+        .get("/products")
+        .then((res) => setFiles(res.data.slice(0, 3)))
+        .catch((err) => console.log(err));
     };
-    getFiles();
+
+    getProducts();
   }, []);
 
   return (

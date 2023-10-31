@@ -1,6 +1,7 @@
-import { listAll, ref, getDownloadURL } from "firebase/storage";
+import { getDownloadURL, listAll, ref } from "firebase/storage";
+import { indexOf } from "lodash";
 import { storage } from "../firebase";
-import { ProductProps } from "../components/Product";
+import { ProductDTO } from "../types/Product";
 
 const listFiles = async () => {
   const storageRef = ref(storage, "/");
@@ -52,14 +53,23 @@ export const fetchFiles = async () => {
       const treatedUrl =
         url.split("/").pop()?.split("-").slice(0, -1).join("-") ?? "Coffee";
 
+      // gets only the string before file extension
+      const fileName = treatedUrl.substring(0, indexOf(treatedUrl, "."));
+
       return {
+        id: index + 1,
+        title: getTitleFromUrl(treatedUrl ? fileName : "Coffee"),
         price: getRandomPrice(),
-        type: "coffee",
-        title: getTitleFromUrl(treatedUrl ? treatedUrl : "Coffee"),
+        description:
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
         image: url,
-        id: index + 1
+        discount: 0,
+        category: "coffee",
+        type: "coffee",
+        createdAt: new Date(),
+        updatedAt: new Date()
       };
     })
   );
-  return coffeeObjects as ProductProps[];
+  return coffeeObjects as ProductDTO[];
 };

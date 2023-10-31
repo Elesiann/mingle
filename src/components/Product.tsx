@@ -4,12 +4,14 @@ import { css, keyframes, styled } from "styled-components";
 import { Tooltip } from "react-tooltip";
 
 export interface ProductProps {
-  price: number;
-  type: string;
-  title: string;
-  image: string;
   id: number;
-  secondImage?: string;
+  title: string;
+  price: number;
+  description?: string;
+  image: string;
+  discount?: number;
+  category: string;
+  type?: string;
   isFavorite: boolean;
   isInCart: boolean;
   onClickFavorite?: (product: ProductProps) => void;
@@ -113,7 +115,7 @@ const Product = (product: ProductProps) => {
       </ImageContainer>
       <InfoContainer>
         <h3>{product.title}</h3>
-        <span>{product.type}</span>
+        <span>{product.category}</span>
         <Price>R$ {product.price}</Price>
       </InfoContainer>
     </Container>

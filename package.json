@@ -12,6 +12,7 @@
   "dependencies": {
     "@chakra-ui/spinner": "^2.1.0",
     "@phosphor-icons/react": "^2.0.13",
+    "axios": "^1.6.0",
     "firebase": "^10.5.0",
     "localforage": "^1.10.0",
     "lodash": "^4.17.21",
