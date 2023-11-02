@@ -6,13 +6,17 @@ import Product, { ProductProps } from "../Product";
 import { api } from "../../libs/axios";
 import { ProductDTO } from "../../types/Product";
 
-const HomeProducts = () => {
+const HomeEquipment = () => {
   const [files, setFiles] = useState<ProductDTO[]>([]);
   const cartContext = useContext(CartContext);
   const isFavorite = (id: number) =>
-    cartContext.favorites.some((prod) => prod.id === id);
+    cartContext.favorites.some(
+      (prod) => prod.id === id && prod.category === "equipment"
+    );
   const isInCart = (id: number) =>
-    cartContext.cart.some((prod) => prod.id === id);
+    cartContext.cart.some(
+      (prod) => prod.id === id && prod.category === "equipment"
+    );
 
   const handleAddToFavorite = (product: ProductProps) => {
     cartContext.setFavorites(product);
@@ -23,21 +27,21 @@ const HomeProducts = () => {
   };
 
   useEffect(() => {
-    const getProducts = async () => {
+    const getEquipment = async () => {
       await api
-        .get("/products")
+        .get("/equipment")
         .then((res) => setFiles(res.data.slice(0, 3)))
         .catch((err) => console.log(err));
     };
 
-    getProducts();
+    getEquipment();
   }, []);
 
   return (
     <Container>
       <Description>
-        <h1>Mais vendidos</h1>
-        <p> Nossos pacotes mais vendidos.</p>
+        <h1>Equipamentos</h1>
+        <p>Para fazer um café fenomenal.</p>
       </Description>
       <Content>
         {files &&
@@ -79,4 +83,4 @@ const Description = styled.div`
   }
 `;
 
-export default HomeProducts;
+export default HomeEquipment;

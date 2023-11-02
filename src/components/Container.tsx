@@ -2,11 +2,16 @@ import { ReactNode } from "react";
 import { styled } from "styled-components";
 
 type ContainerProps = {
+  backgroundColor?: string;
   children: ReactNode;
 };
 
-const Container = ({ children }: ContainerProps) => {
-  return <AppContainer>{children}</AppContainer>;
+const Container = ({ children, backgroundColor }: ContainerProps) => {
+  return (
+    <AppContainer style={{ backgroundColor: backgroundColor }}>
+      {children}
+    </AppContainer>
+  );
 };
 
 const AppContainer = styled.section`

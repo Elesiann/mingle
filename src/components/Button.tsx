@@ -39,17 +39,14 @@ const ButtonComponent = styled.button<{ styles: ButtonProps }>`
   font-weight: ${(props) => props.styles.fontWeight || "bold"};
   text-transform: ${(props) => (props.styles.uppercase ? "uppercase" : "none")};
 
-  :hover {
-    background-color: ${(props) =>
+  &:hover {
+    background-color: ${(props) => props.styles.hover?.color};
+    color: ${(props) => props.styles.hover?.textColor};
+
+    /* border: ${(props) =>
       props.styles.style === "outlined"
-        ? props.styles.color || "var(--firefly)"
-        : "none"};
-    color: ${(props) =>
-      props.styles.style === "outlined"
-        ? "var(--bgWhite)"
-        : props.styles.textColor || "var(--bgWhite)"};
-    border: ${(props) =>
-      props.styles.style === "outlined" ? "none" : "2px solid var(--firefly)"};
+        ? "none"
+        : "2px solid var(--firefly)"}; */
   }
 `;
 
