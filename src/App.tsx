@@ -5,11 +5,16 @@ import AuthContext from "./context/authContext";
 import CartContext from "./context/cartContext";
 import "react-toastify/dist/ReactToastify.min.css";
 import { ToastContainer } from "react-toastify";
+import Product from "./routes/Product";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Homepage />
+  },
+  {
+    path: "/products/:id",
+    element: <Product />
   }
 ]);
 

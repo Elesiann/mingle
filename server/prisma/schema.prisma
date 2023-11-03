@@ -14,18 +14,7 @@ model Product {
   image       String
   discount    Float
   category    String
-  description String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-}
-
-model Equipment {
-  id          Int      @id @default(autoincrement())
-  title       String
-  price       Float
-  image       String
-  discount    Float
-  category    String
+  type        String
   description String
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt

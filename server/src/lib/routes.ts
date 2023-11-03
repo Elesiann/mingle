@@ -1,6 +1,6 @@
 import { prisma } from "./prisma";
 import { z } from "zod";
-import { FastifyInstance } from "fastify";
+import { FastifyInstance, FastifyRequest } from "fastify";
 
 export async function AppRoutes(app: FastifyInstance) {
   app.get("/products", async (request, reply) => {
@@ -15,10 +15,11 @@ export async function AppRoutes(app: FastifyInstance) {
       description: z.string(),
       category: z.string(),
       image: z.string(),
-      discount: z.number()
+      discount: z.number(),
+      type: z.string()
     });
 
-    const { title, price, description, category, image, discount } =
+    const { title, price, description, category, image, discount, type } =
       createProductSchema.parse(request.body);
 
     await prisma.product.create({
@@ -28,38 +29,24 @@ export async function AppRoutes(app: FastifyInstance) {
         description,
         category,
         image,
-        discount
+        discount,
+        type
       }
     });
   });
 
-  app.get("/equipment", async (request, reply) => {
-    const equipment = await prisma.equipment.findMany();
-    reply.send(equipment);
-  });
+  app.get(
+    "/products/:id",
+    async (request: FastifyRequest<{ Params: { id: string } }>, reply) => {
+      const { id } = request.params;
 
-  app.post("/equipment", async (request) => {
-    const createEquipmentSchema = z.object({
-      title: z.string(),
-      price: z.number(),
-      description: z.string(),
-      category: z.string(),
-      image: z.string(),
-      discount: z.number()
-    });
+      const product = await prisma.product.findUnique({
+        where: {
+          id: Number(id)
+        }
+      });
 
-    const { title, price, description, category, image, discount } =
-      createEquipmentSchema.parse(request.body);
-
-    await prisma.equipment.create({
-      data: {
-        title,
-        price,
-        description,
-        category,
-        image,
-        discount
-      }
-    });
-  });
+      reply.send(product);
+    }
+  );
 }

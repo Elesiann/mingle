@@ -18,6 +18,21 @@ const listFiles = async () => {
   return imgs;
 };
 
+const listEquipment = async () => {
+  const storageRef = ref(storage, "/equipment");
+
+  const { items } = await listAll(storageRef);
+
+  const urlsPromises = items.map(async (it) => {
+    const url = await getDownloadURL(it);
+    return url;
+  });
+
+  const imgs = await Promise.all(urlsPromises);
+
+  return imgs;
+};
+
 function getRandomPrice() {
   return Math.floor(Math.random() * 34) + 12;
 }
@@ -46,6 +61,28 @@ function getTitleFromUrl(url: string) {
   return finalTitle.trim();
 }
 
+export const fetchEquipment = async () => {
+  const urls = await listEquipment();
+  const equipmentObject = await Promise.all(
+    urls.map(async function (url, index) {
+      return {
+        id: index + 1,
+        title: "equipamento",
+        price: Math.floor(Math.random() * 100) + 17,
+        description:
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+        image: url,
+        discount: 0,
+        category: "coffee",
+        type: "equipment",
+        createdAt: new Date(),
+        updatedAt: new Date()
+      };
+    })
+  );
+  return equipmentObject;
+};
+
 export const fetchFiles = async () => {
   const urls = await listFiles();
   const coffeeObjects = await Promise.all(
@@ -71,5 +108,6 @@ export const fetchFiles = async () => {
       };
     })
   );
+
   return coffeeObjects as ProductDTO[];
 };

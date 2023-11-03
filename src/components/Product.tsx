@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { Heart, MagnifyingGlass, ShoppingCart } from "@phosphor-icons/react";
-import { css, keyframes, styled } from "styled-components";
+import { css, styled } from "styled-components";
 import { Tooltip } from "react-tooltip";
+import { beatAnimation } from "../constants/animations";
 
 export interface ProductProps {
   id: number;
@@ -11,21 +12,13 @@ export interface ProductProps {
   image: string;
   discount?: number;
   category: string;
-  type?: string;
+  type?: "equipment" | "coffee";
   isFavorite: boolean;
   isInCart: boolean;
+  onClick?: (product: ProductProps) => void;
   onClickFavorite?: (product: ProductProps) => void;
   onClickCart?: (product: ProductProps) => void;
 }
-
-const beatAnimation = keyframes`
-  0%, 100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.5);
-  }
-`;
 
 const Product = (product: ProductProps) => {
   const [showOptions, setShowOptions] = useState(false);
@@ -60,7 +53,6 @@ const Product = (product: ProductProps) => {
       setAnimations(resetAnimations);
     }, 500);
 
-    // Make sure to clear the timeout when the component unmounts to prevent memory leaks
     return () => clearTimeout(animationTimeout);
   }, [animations]);
 
@@ -70,7 +62,9 @@ const Product = (product: ProductProps) => {
         onMouseOver={() => setShowOptions(true)}
         onMouseLeave={() => setShowOptions(false)}
       >
-        <img src={product.image} alt="" />
+        <ImageLink href={`/products/${product.id}`}>
+          <ProductImage src={product.image} alt="" />
+        </ImageLink>
         <ProductOptionsContainer>
           <ProductOptions $show={showOptions}>
             <>
@@ -149,6 +143,21 @@ const Price = styled.div`
 const ImageContainer = styled.div`
   position: relative;
   overflow: hidden;
+`;
+
+const ImageLink = styled.a`
+  position: relative;
+  display: block;
+  width: 300px;
+  height: 300px;
+  overflow: hidden;
+  cursor: pointer;
+`;
+
+const ProductImage = styled.img`
+  width: 300px;
+  height: 300px;
+  object-fit: cover;
 `;
 
 const InfoContainer = styled.div`

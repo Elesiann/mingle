@@ -13,16 +13,23 @@ interface SidebarProps {
 }
 
 const UserSidebar = (props: SidebarProps) => {
+  const cartStorage = JSON.parse(localStorage.getItem("cart") || "[]");
+  const favoritesStorage = JSON.parse(
+    localStorage.getItem("favorites") || "[]"
+  );
+
   const renderUserCards = () => {
     return (
       <>
         <UserCard href="/carrinho">
           <ShoppingCart size={48} />
           <h2>Seu carrinho</h2>
+          <span>{cartStorage.length}</span>
         </UserCard>
         <UserCard href="/favoritos">
           <Heart size={48} />
           <h2>Seus favoritos</h2>
+          <span>{favoritesStorage.length}</span>
         </UserCard>
         <UserCard onClick={props.callbacks.logout}>
           <SignOut size={48} />
@@ -75,6 +82,7 @@ const Content = styled.div`
 `;
 
 const UserCard = styled.a`
+  position: relative;
   text-decoration: unset;
   display: flex;
   justify-content: center;
@@ -92,6 +100,19 @@ const UserCard = styled.a`
   svg {
     fill: var(--firefly);
     margin-bottom: 1rem;
+  }
+
+  span {
+    background-color: var(--green);
+    color: white;
+    border-radius: 50%;
+    padding: 0.25rem 0.5rem;
+    position: absolute;
+    top: 0;
+    right: 0;
+    transform: translate(50%, -50%);
+    font-weight: bold;
+    font-size: 0.9rem;
   }
 
   &:hover {

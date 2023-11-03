@@ -50,7 +50,7 @@ const NavBar = () => {
     return (
       <NavList>
         <NavItem>
-          <NavLink href="#">Home</NavLink>
+          <NavLink href="/">Home</NavLink>
         </NavItem>
         <NavItem>
           <NavLink href="#">Categorias</NavLink>
@@ -60,7 +60,7 @@ const NavBar = () => {
           <NavLink href="/promo">Promoções</NavLink>
         </NavItem>
         <NavItem>
-          <NavLink href="#">Onde estamos</NavLink>
+          <NavLink href="/local">Onde estamos</NavLink>
         </NavItem>
       </NavList>
     );
