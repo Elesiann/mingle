@@ -7,6 +7,7 @@ import "react-toastify/dist/ReactToastify.min.css";
 import { ToastContainer } from "react-toastify";
 import { ChakraProvider } from "@chakra-ui/react";
 import Product from "./routes/Product";
+import Cart from "./routes/Cart";
 
 const router = createBrowserRouter([
   {
@@ -16,7 +17,8 @@ const router = createBrowserRouter([
   {
     path: "/products/:id",
     element: <Product />
-  }
+  },
+  { path: "/cart", element: <Cart /> }
 ]);
 
 type AppProps = {

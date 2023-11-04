@@ -51,9 +51,15 @@ const NavBar = () => {
             Categorias
           </MenuButton>
           <MenuList>
-            <CustomMenuItem>Cafés</CustomMenuItem>
-            <CustomMenuItem>Equipamentos</CustomMenuItem>
-            <CustomMenuItem>Bebidas prontas</CustomMenuItem>
+            <CustomMenuItem as="a" href="/coffees">
+              Cafés
+            </CustomMenuItem>
+            <CustomMenuItem as="a" href="/equipments">
+              Equipamentos
+            </CustomMenuItem>
+            <CustomMenuItem as="a" href="/drinks">
+              Bebidas prontas
+            </CustomMenuItem>
           </MenuList>
         </Menu>
         <NavItem>

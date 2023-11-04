@@ -12,7 +12,8 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
-const shouldShowNavbar = location.pathname !== "/login";
+const shouldShowNavbar =
+  location.pathname !== "/login" && location.pathname !== "/cart";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>

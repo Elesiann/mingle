@@ -21,12 +21,12 @@ const UserSidebar = (props: SidebarProps) => {
   const renderUserCards = () => {
     return (
       <>
-        <UserCard href="/carrinho">
+        <UserCard href="/cart">
           <ShoppingCart size={48} />
           <h2>Seu carrinho</h2>
           <span>{cartStorage.length}</span>
         </UserCard>
-        <UserCard href="/favoritos">
+        <UserCard href="/favprites">
           <Heart size={48} />
           <h2>Seus favoritos</h2>
           <span>{favoritesStorage.length}</span>

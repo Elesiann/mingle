@@ -15,6 +15,7 @@ export interface ProductProps {
   type?: "equipment" | "coffee";
   isFavorite: boolean;
   isInCart: boolean;
+  quantity?: number;
   onClick?: (product: ProductProps) => void;
   onClickFavorite?: (product: ProductProps) => void;
   onClickCart?: (product: ProductProps) => void;
