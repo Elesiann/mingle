@@ -38,7 +38,7 @@ const Cart = () => {
           cartItem.totalPrice += cartItem.price;
         } else {
           console.log(cartItem.quantity);
-          if (cartItem.quantity > 2) {
+          if (cartItem.quantity > 1) {
             cartItem.quantity -= 1;
             cartItem.totalPrice -= cartItem.price;
           } else if (cartItem.quantity === 1) {
