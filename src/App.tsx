@@ -5,6 +5,7 @@ import AuthContext from "./context/authContext";
 import CartContext from "./context/cartContext";
 import "react-toastify/dist/ReactToastify.min.css";
 import { ToastContainer } from "react-toastify";
+import { ChakraProvider } from "@chakra-ui/react";
 import Product from "./routes/Product";
 
 const router = createBrowserRouter([
@@ -25,24 +26,26 @@ type AppProps = {
 function App({ showNavbar }: AppProps) {
   return (
     <>
-      <CartContext>
-        <AuthContext>
-          {showNavbar && <NavBar />}
-          <RouterProvider router={router} />
-          <ToastContainer
-            position="top-center"
-            autoClose={5000}
-            hideProgressBar={false}
-            newestOnTop={false}
-            closeOnClick
-            rtl={false}
-            pauseOnFocusLoss
-            draggable
-            pauseOnHover
-            theme="colored"
-          />
-        </AuthContext>
-      </CartContext>
+      <ChakraProvider>
+        <CartContext>
+          <AuthContext>
+            {showNavbar && <NavBar />}
+            <RouterProvider router={router} />
+            <ToastContainer
+              position="top-center"
+              autoClose={5000}
+              hideProgressBar={false}
+              newestOnTop={false}
+              closeOnClick
+              rtl={false}
+              pauseOnFocusLoss
+              draggable
+              pauseOnHover
+              theme="colored"
+            />
+          </AuthContext>
+        </CartContext>
+      </ChakraProvider>
     </>
   );
 }

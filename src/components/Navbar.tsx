@@ -1,23 +1,13 @@
+import { Button, Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
 import { CaretDown, SignIn, UserCircleGear } from "@phosphor-icons/react";
 import { isEmpty } from "lodash";
-import { useState, useContext } from "react";
+import { useContext, useState } from "react";
 import styled from "styled-components";
+import { AuthContext } from "../context/authContext";
 import { colors } from "../styles/colors";
 import { capitalizeFirstName, getFromLocalStorage } from "../utils/utils";
 import RegisterSidebar from "./layouts/RegisterSidebar";
 import UserSidebar from "./layouts/UserSidebar";
-import { AuthContext } from "../context/authContext";
-
-// the categories will be
-// gold blend
-// combos
-// platinum blend
-// colombia
-// peru
-// costa rica
-// brasil
-// guatemala
-// descafeinados
 
 const NavBar = () => {
   const [openNavbar, setOpenNavbar] = useState<"user" | "login" | "">("");
@@ -52,10 +42,20 @@ const NavBar = () => {
         <NavItem>
           <NavLink href="/">Home</NavLink>
         </NavItem>
-        <NavItem>
-          <NavLink href="#">Categorias</NavLink>
-          <CaretDown color={colors.navajo} size={18} />
-        </NavItem>
+        <Menu>
+          <MenuButton
+            _expanded={{ bg: colors.gunmetal }}
+            as={Button}
+            rightIcon={<CaretDown />}
+          >
+            Categorias
+          </MenuButton>
+          <MenuList>
+            <CustomMenuItem>Cafés</CustomMenuItem>
+            <CustomMenuItem>Equipamentos</CustomMenuItem>
+            <CustomMenuItem>Bebidas prontas</CustomMenuItem>
+          </MenuList>
+        </Menu>
         <NavItem>
           <NavLink href="/promo">Promoções</NavLink>
         </NavItem>
@@ -92,11 +92,13 @@ const NavBar = () => {
 };
 
 const CustomContainer = styled.div`
-  position: sticky;
+  position: absolute;
+  max-width: 1200px;
+  width: 100%;
   top: 2rem;
   z-index: 9;
-  display: flex;
-  justify-content: center;
+  left: 50%;
+  transform: translateX(-50%);
 `;
 
 const NavContainer = styled.nav`
@@ -109,19 +111,59 @@ const NavContainer = styled.nav`
   padding: 1.5rem;
   border-radius: 0.5rem;
   box-shadow: 0px 8px 8px rgba(0, 0, 0, 0.1);
+
+  li,
+  button {
+    margin-right: 0.33rem;
+  }
 `;
 
 const NavList = styled.ul`
   list-style: none;
   display: flex;
   align-items: center;
+
+  button {
+    background: unset;
+
+    &:hover {
+      background: unset;
+      background-color: var(--gunmetal);
+      color: var(--babyPowder);
+
+      span {
+        color: var(--babyPowder);
+      }
+    }
+  }
+
+  button > span {
+    color: var(--navajo);
+    font-size: 1.1rem;
+    font-family: var(--secondary-font);
+    font-weight: 400;
+  }
+`;
+
+const CustomMenuItem = styled(MenuItem)`
+  padding: 0.4rem;
+  color: var(--navajo);
+  font-size: 1.1rem;
+  font-family: var(--secondary-font);
+  font-weight: 400;
+  cursor: pointer;
+
+  &:hover {
+    background-color: var(--gunmetal);
+    color: var(--babyPowder);
+  }
 `;
 
 const NavItem = styled.li`
   display: flex;
   align-items: center;
-  padding: 0.75rem;
-  border-radius: 4px;
+  padding: 0.45rem;
+  border-radius: 8px;
 
   svg {
     margin-left: 0.5rem;
@@ -157,7 +199,7 @@ const LoginContainer = styled.div`
   align-items: center;
   gap: 1rem;
   cursor: pointer;
-  padding: 0.5rem;
+  padding: 0.4rem;
   border-radius: 4px;
 
   &:hover {
@@ -176,7 +218,7 @@ const UserName = styled.div`
   font-family: var(--secondary-font);
   font-size: 1.1rem;
   font-weight: regular;
-  padding: 0.5rem;
+  padding: 0.33rem;
   cursor: pointer;
 
   svg {
