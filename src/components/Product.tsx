@@ -8,6 +8,7 @@ export interface ProductProps {
   id: number;
   title: string;
   price: number;
+  totalPrice?: number;
   description?: string;
   image: string;
   discount?: number;

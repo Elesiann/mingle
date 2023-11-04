@@ -30,6 +30,8 @@ const HomeProducts = () => {
         {files &&
           files.map((item) => (
             <Product
+              quantity={1}
+              totalPrice={item.price}
               key={item.id}
               {...item}
               onClickCart={handleAddToCart}

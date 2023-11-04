@@ -27,6 +27,8 @@ const RelatedProducts = () => {
         <ProductsContainer>
           {products.map((item) => (
             <Product
+              totalPrice={item.price}
+              quantity={1}
               isInCart={isInCart(item.id)}
               isFavorite={isFavorite(item.id)}
               key={item.id}

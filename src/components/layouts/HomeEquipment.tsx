@@ -37,8 +37,10 @@ const HomeEquipment = () => {
         {files &&
           files.map((item) => (
             <Product
-              key={item.id}
+              quantity={1}
+              totalPrice={item.price}
               {...item}
+              key={item.id}
               onClickCart={handleAddToCart}
               onClickFavorite={handleAddToFavorite}
               isFavorite={isFavorite(item.id)}

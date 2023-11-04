@@ -10,16 +10,77 @@ import {
 import { styled } from "styled-components";
 import Container from "../components/Container";
 import { ProductProps } from "../components/Product";
+import { useState } from "react";
+import { MinusCircle, PlusCircle } from "@phosphor-icons/react";
+import ModalComponent from "../components/Modal";
+import { toast } from "react-toastify";
 
 const Cart = () => {
-  const cart = JSON.parse(localStorage.getItem("cart") || "[]");
+  const [itemToRemove, setItemToRemove] = useState<ProductProps | null>(null);
+  const [openModal, setOpenModal] = useState(false);
+  const [cart, setCart] = useState(
+    JSON.parse(localStorage.getItem("cart") || "[]")
+  );
   const totalPrice = cart.reduce(
-    (total: number, item: ProductProps) => total + item.price,
+    (total: number, item: ProductProps) => total + (item.totalPrice ?? 0),
     0
   );
+
+  const handleUpdateQuantity = (item: ProductProps, increment: boolean) => {
+    const updatedCart = cart.map((cartItem: ProductProps) => {
+      if (
+        cartItem.id === item.id &&
+        typeof cartItem.quantity !== "undefined" &&
+        typeof cartItem.totalPrice !== "undefined"
+      ) {
+        if (increment) {
+          cartItem.quantity += 1;
+          cartItem.totalPrice += cartItem.price;
+        } else {
+          console.log(cartItem.quantity);
+          if (cartItem.quantity > 2) {
+            cartItem.quantity -= 1;
+            cartItem.totalPrice -= cartItem.price;
+          } else if (cartItem.quantity === 1) {
+            setOpenModal(true);
+            setItemToRemove(cartItem);
+          }
+        }
+      }
+      return cartItem;
+    });
+
+    setCart(updatedCart);
+    localStorage.setItem("cart", JSON.stringify(updatedCart));
+  };
+
+  const handleRemoveItemFromCart = () => {
+    if (itemToRemove) {
+      const updatedCart = cart.filter(
+        (cartItem: ProductProps) => cartItem.id !== itemToRemove.id
+      );
+      setCart(updatedCart);
+      setOpenModal(false);
+      localStorage.setItem("cart", JSON.stringify(updatedCart));
+      toast.success("Item removido do carrinho com sucesso!");
+    } else {
+      toast.error("Erro ao remover item do carrinho!");
+    }
+  };
+
   return (
     <Container>
       <Title>Seu carrinho</Title>
+      {openModal && (
+        <ModalComponent
+          modalTitle="Deseja remover o item do carrinho?"
+          modalBody="Você está tentando remover um item que possui apenas uma unidade. Deseja remover o item do carrinho?"
+          isOpen={openModal}
+          onClose={() => setOpenModal(false)}
+          onConfirm={handleRemoveItemFromCart}
+          isCentered
+        />
+      )}
       <Content>
         <Left>
           <TableContainer>
@@ -38,7 +99,21 @@ const Cart = () => {
                       <div>{item.title}</div>
                     </CustomCell>
                     <Td>{item.price}</Td>
-                    <Td>{item.quantity ?? 1}</Td>
+                    <Td>
+                      <div style={{ display: "flex", alignItems: "center" }}>
+                        <button
+                          onClick={() => handleUpdateQuantity(item, false)}
+                        >
+                          <MinusCircle size={24} />
+                        </button>{" "}
+                        {item.quantity ?? 1}{" "}
+                        <button
+                          onClick={() => handleUpdateQuantity(item, true)}
+                        >
+                          <PlusCircle size={24} />
+                        </button>
+                      </div>
+                    </Td>
                     <Td>{item.price * (item.quantity ?? 1)}</Td>
                   </Tr>
                 ))}
@@ -97,6 +172,12 @@ const Left = styled.div`
     text-align: start;
     vertical-align: middle;
     color: var(--dark);
+
+    button {
+      font-weight: bold;
+      font-size: 1.2rem;
+      margin-inline: 0.25rem;
+    }
   }
 
   th {
