@@ -11,12 +11,15 @@ import { styled } from "styled-components";
 import Container from "../components/Container";
 import { ProductProps } from "../components/Product";
 import { useState } from "react";
-import { MinusCircle, PlusCircle } from "@phosphor-icons/react";
+import { MinusCircle, PlusCircle, ShoppingCart } from "@phosphor-icons/react";
 import ModalComponent from "../components/Modal";
 import { toast } from "react-toastify";
 import EmptyCartImage from "../assets/images/empty-cart.png";
+import { colors } from "../styles/colors";
+import { useCartUtils } from "../hooks/useCart";
 
 const Cart = () => {
+  const { handleRemoveFromCart } = useCartUtils();
   const [itemToRemove, setItemToRemove] = useState<ProductProps | null>(null);
   const [openModal, setOpenModal] = useState(false);
   const [cart, setCart] = useState(
@@ -64,12 +67,11 @@ const Cart = () => {
 
   const handleRemoveItemFromCart = () => {
     if (itemToRemove) {
-      const updatedCart = cart.filter(
-        (cartItem: ProductProps) => cartItem.id !== itemToRemove.id
-      );
-      setCart(updatedCart);
+      const newCart = handleRemoveFromCart(itemToRemove);
+
+      setCart(newCart);
       setOpenModal(false);
-      localStorage.setItem("cart", JSON.stringify(updatedCart));
+      setItemToRemove(null);
       toast.success("Item removido do carrinho com sucesso!");
     } else {
       toast.error("Erro ao remover item do carrinho!");
@@ -89,7 +91,22 @@ const Cart = () => {
         />
       )}
       <>
-        {cart.length > 0 && <Title>Seu carrinho</Title>}
+        {cart.length > 0 && (
+          <Title
+            style={{
+              textAlign: "center",
+              fontSize: "2rem",
+              marginBottom: "2rem"
+            }}
+          >
+            <ShoppingCart
+              color={colors.green}
+              size={48}
+              style={{ margin: "0 auto" }}
+            />
+            <h1>Seu carrinho</h1>
+          </Title>
+        )}
         <Content>
           {cart.length === 0 ? (
             renderEmptyCart()
@@ -163,12 +180,14 @@ const Cart = () => {
   );
 };
 
-const Title = styled.h1`
-  font-size: 2rem;
-  font-weight: bold;
-  color: var(--dark);
+const Title = styled.div`
   margin-block: 2rem;
-  margin-top: 5%;
+  margin-top: 10%;
+  h1 {
+    color: var(--dark);
+    font-size: 2rem;
+    font-weight: bold;
+  }
 `;
 
 const Content = styled.div`

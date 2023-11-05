@@ -7,6 +7,8 @@ interface CartContextProps {
   cart: ProductProps[];
   setFavorites: (product: ProductProps) => void;
   setCart: (product: ProductProps) => void;
+  handleRemoveFromFavorites: (product: ProductProps) => ProductProps[];
+  handleRemoveFromCart: (product: ProductProps) => ProductProps[];
 }
 
 export const CartContext = createContext<CartContextProps>(
@@ -44,11 +46,27 @@ const Cart = ({ children }: PropsWithChildren) => {
     setCart([...cart, product]);
   };
 
+  const handleRemoveFromFavorites = (product: ProductProps) => {
+    const newFavorites = favorites.filter((prod) => prod.id !== product.id);
+    setFavorites(newFavorites);
+
+    return newFavorites;
+  };
+
+  const handleRemoveFromCart = (product: ProductProps) => {
+    const newCart = cart.filter((prod) => prod.id !== product.id);
+    setCart(newCart);
+
+    return newCart;
+  };
+
   const context = {
     favorites,
     cart,
     setFavorites: handleAddToFavorites,
-    setCart: handleAddToCart
+    setCart: handleAddToCart,
+    handleRemoveFromFavorites,
+    handleRemoveFromCart
   };
   return (
     <CartContext.Provider value={context}>{children}</CartContext.Provider>

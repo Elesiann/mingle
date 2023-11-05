@@ -19,10 +19,20 @@ export const useCartUtils = () => {
     cartContext.setCart(product);
   };
 
+  const handleRemoveFromFavorites = (product: ProductProps) => {
+    return cartContext.handleRemoveFromFavorites(product);
+  };
+
+  const handleRemoveFromCart = (product: ProductProps) => {
+    return cartContext.handleRemoveFromCart(product);
+  };
+
   return {
     isFavorite,
     isInCart,
     handleAddToFavorite,
-    handleAddToCart
+    handleAddToCart,
+    handleRemoveFromFavorites,
+    handleRemoveFromCart
   };
 };

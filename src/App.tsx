@@ -8,6 +8,7 @@ import { ToastContainer } from "react-toastify";
 import { ChakraProvider } from "@chakra-ui/react";
 import Product from "./routes/Product";
 import Cart from "./routes/Cart";
+import Favorites from "./routes/Favorites";
 
 const router = createBrowserRouter([
   {
@@ -18,7 +19,8 @@ const router = createBrowserRouter([
     path: "/products/:id",
     element: <Product />
   },
-  { path: "/cart", element: <Cart /> }
+  { path: "/cart", element: <Cart /> },
+  { path: "/favorites", element: <Favorites /> }
 ]);
 
 type AppProps = {
