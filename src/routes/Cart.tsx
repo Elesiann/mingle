@@ -14,6 +14,7 @@ import { useState } from "react";
 import { MinusCircle, PlusCircle } from "@phosphor-icons/react";
 import ModalComponent from "../components/Modal";
 import { toast } from "react-toastify";
+import EmptyCartImage from "../assets/images/empty-cart.png";
 
 const Cart = () => {
   const [itemToRemove, setItemToRemove] = useState<ProductProps | null>(null);
@@ -24,6 +25,14 @@ const Cart = () => {
   const totalPrice = cart.reduce(
     (total: number, item: ProductProps) => total + (item.totalPrice ?? 0),
     0
+  );
+
+  const renderEmptyCart = () => (
+    <EmptyCartContainer>
+      <h1>Seu carrinho está vazio!</h1>
+      <img src={EmptyCartImage} alt="" />
+      <a href="/products">Ver produtos</a>
+    </EmptyCartContainer>
   );
 
   const handleUpdateQuantity = (item: ProductProps, increment: boolean) => {
@@ -37,7 +46,6 @@ const Cart = () => {
           cartItem.quantity += 1;
           cartItem.totalPrice += cartItem.price;
         } else {
-          console.log(cartItem.quantity);
           if (cartItem.quantity > 1) {
             cartItem.quantity -= 1;
             cartItem.totalPrice -= cartItem.price;
@@ -70,7 +78,6 @@ const Cart = () => {
 
   return (
     <Container>
-      <Title>Seu carrinho</Title>
       {openModal && (
         <ModalComponent
           modalTitle="Deseja remover o item do carrinho?"
@@ -81,64 +88,77 @@ const Cart = () => {
           isCentered
         />
       )}
-      <Content>
-        <Left>
-          <TableContainer>
-            <Table>
-              <Thead>
-                <Th>Produto</Th>
-                <Th>Preço un.</Th>
-                <Th>Qtde.</Th>
-                <Th>Total</Th>
-              </Thead>
-              <Tbody>
-                {cart.map((item: ProductProps) => (
-                  <Tr key={item.id}>
-                    <CustomCell>
-                      <img src={item.image} alt={item.title} />
-                      <div>{item.title}</div>
-                    </CustomCell>
-                    <Td>{item.price}</Td>
-                    <Td>
-                      <div style={{ display: "flex", alignItems: "center" }}>
-                        <button
-                          onClick={() => handleUpdateQuantity(item, false)}
-                        >
-                          <MinusCircle size={24} />
-                        </button>{" "}
-                        {item.quantity ?? 1}{" "}
-                        <button
-                          onClick={() => handleUpdateQuantity(item, true)}
-                        >
-                          <PlusCircle size={24} />
-                        </button>
-                      </div>
-                    </Td>
-                    <Td>{item.price * (item.quantity ?? 1)}</Td>
-                  </Tr>
-                ))}
-              </Tbody>
-            </Table>
-          </TableContainer>
-        </Left>
-        <Right>
-          <SummaryContainer>
-            <h1>Resumo do pedido</h1>
-            <div>
-              <h3>
-                <span>Subtotal</span> R$ {totalPrice},00
-              </h3>
-              <h3>
-                Frete <b>Grátis</b>
-              </h3>
-            </div>
-            <h2>
-              Total <span>R$ {totalPrice},00</span>
-            </h2>
-          </SummaryContainer>
-          <button>Checkout</button>
-        </Right>
-      </Content>
+      <>
+        {cart.length > 0 && <Title>Seu carrinho</Title>}
+        <Content>
+          {cart.length === 0 ? (
+            renderEmptyCart()
+          ) : (
+            <>
+              <Left>
+                <TableContainer>
+                  <Table>
+                    <Thead>
+                      <Th>Produto</Th>
+                      <Th>Preço un.</Th>
+                      <Th>Qtde.</Th>
+                      <Th>Total</Th>
+                    </Thead>
+                    <Tbody>
+                      {cart.map((item: ProductProps) => (
+                        <Tr key={item.id}>
+                          <CustomCell>
+                            <img src={item.image} alt={item.title} />
+                            <div>{item.title}</div>
+                          </CustomCell>
+                          <Td>{item.price}</Td>
+                          <Td>
+                            <div
+                              style={{ display: "flex", alignItems: "center" }}
+                            >
+                              <button
+                                onClick={() =>
+                                  handleUpdateQuantity(item, false)
+                                }
+                              >
+                                <MinusCircle size={24} />
+                              </button>{" "}
+                              {item.quantity ?? 1}{" "}
+                              <button
+                                onClick={() => handleUpdateQuantity(item, true)}
+                              >
+                                <PlusCircle size={24} />
+                              </button>
+                            </div>
+                          </Td>
+                          <Td>{item.price * (item.quantity ?? 1)}</Td>
+                        </Tr>
+                      ))}
+                    </Tbody>
+                  </Table>
+                </TableContainer>
+              </Left>
+              <Right>
+                <SummaryContainer>
+                  <h1>Resumo do pedido</h1>
+                  <div>
+                    <h3>
+                      <span>Subtotal</span> R$ {totalPrice},00
+                    </h3>
+                    <h3>
+                      Frete <b>Grátis</b>
+                    </h3>
+                  </div>
+                  <h2>
+                    Total <span>R$ {totalPrice},00</span>
+                  </h2>
+                </SummaryContainer>
+                <button>Checkout</button>
+              </Right>
+            </>
+          )}
+        </Content>
+      </>
     </Container>
   );
 };
@@ -258,6 +278,42 @@ const Right = styled.div`
     color: var(--bgWhite);
     font-weight: bold;
     font-size: 1.15rem;
+  }
+`;
+
+const EmptyCartContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2rem;
+  margin: 0 auto;
+  border-radius: 0.5rem;
+  margin-top: 5%;
+
+  h1 {
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--dark);
+    margin-block: 2rem;
+  }
+
+  img {
+    width: 30svh;
+  }
+
+  a {
+    font-size: 1rem;
+    font-weight: bold;
+    color: var(--primary);
+    background-color: var(--firefly);
+    border-radius: 0.5rem;
+    padding: 0.5rem 1rem;
+
+    &:hover {
+      background-color: var(--gunmetal);
+    }
   }
 `;
 
