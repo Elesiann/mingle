@@ -10,8 +10,8 @@ const Homepage = () => {
       <HomeHeader />
       <HomeProducts />
       <HomeCheckCTA />
-      <HomeAboutBeans />
       <HomeEquipment />
+      <HomeAboutBeans />
     </>
   );
 };
