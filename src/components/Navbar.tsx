@@ -153,11 +153,12 @@ const NavList = styled.ul`
 
 const CustomMenuItem = styled(MenuItem)`
   padding: 0.4rem;
-  color: var(--navajo);
+  color: var(--gunmetal);
   font-size: 1.1rem;
   font-family: var(--secondary-font);
-  font-weight: 400;
+  font-weight: regular;
   cursor: pointer;
+  display: block;
 
   &:hover {
     background-color: var(--gunmetal);

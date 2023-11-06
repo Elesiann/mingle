@@ -49,7 +49,6 @@ const UserSidebar = (props: SidebarProps) => {
             <span>
               <X size={18} />
             </span>
-            <h2>Fechar</h2>
           </Close>
         </UserData>
         <Content>{renderUserCards()}</Content>
@@ -106,13 +105,17 @@ const UserCard = styled.a`
     background-color: var(--green);
     color: white;
     border-radius: 50%;
-    padding: 0.25rem 0.5rem;
     position: absolute;
     top: 0;
     right: 0;
     transform: translate(50%, -50%);
     font-weight: bold;
-    font-size: 0.9rem;
+    font-size: 0.8rem;
+    width: 1.75rem;
+    height: 1.75rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
   &:hover {
@@ -160,11 +163,16 @@ const Close = styled.div`
   width: 100%;
   cursor: pointer;
 
-  h2 {
-    font-size: 0.875rem;
-  }
   svg {
-    margin-top: 4.5px;
+    width: 1.5rem;
+    height: 1.5rem;
+    margin-top: 2px;
+  }
+
+  &:hover {
+    svg {
+      transform: rotate(90deg);
+    }
   }
 `;
 
