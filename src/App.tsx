@@ -9,6 +9,7 @@ import { ChakraProvider } from "@chakra-ui/react";
 import Product from "./routes/Product";
 import Cart from "./routes/Cart";
 import Favorites from "./routes/Favorites";
+import Coffees from "./routes/Coffees";
 
 const router = createBrowserRouter([
   {
@@ -20,7 +21,15 @@ const router = createBrowserRouter([
     element: <Product />
   },
   { path: "/cart", element: <Cart /> },
-  { path: "/favorites", element: <Favorites /> }
+  { path: "/favorites", element: <Favorites /> },
+  {
+    path: "/coffees",
+    element: <Coffees />
+  },
+  {
+    path: "*",
+    element: <div>Not found</div>
+  }
 ]);
 
 type AppProps = {

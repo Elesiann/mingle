@@ -57,6 +57,9 @@ const Cart = () => {
             setItemToRemove(cartItem);
           }
         }
+      } else if (cartItem.quantity === undefined) {
+        cartItem.quantity = 1;
+        cartItem.totalPrice = cartItem.price;
       }
       return cartItem;
     });
@@ -182,7 +185,7 @@ const Cart = () => {
 
 const Title = styled.div`
   margin-block: 2rem;
-  margin-top: 10%;
+  margin-top: 18%;
   h1 {
     color: var(--dark);
     font-size: 2rem;

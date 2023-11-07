@@ -95,7 +95,7 @@ const Favorites = () => {
 };
 
 const Content = styled.div`
-  margin-top: 10%;
+  margin-top: 18%;
   width: 100%;
   h1 {
     font-size: 2rem;

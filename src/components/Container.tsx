@@ -1,10 +1,10 @@
 import { ReactNode } from "react";
 import { styled } from "styled-components";
 
-type ContainerProps = {
+interface ContainerProps extends React.HTMLAttributes<HTMLDivElement> {
   backgroundColor?: string;
   children: ReactNode;
-};
+}
 
 const Container = ({ children, backgroundColor }: ContainerProps) => {
   return (

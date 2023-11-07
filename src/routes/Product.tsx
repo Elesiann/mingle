@@ -11,6 +11,7 @@ import { useCartUtils } from "../hooks/useCart";
 import { api } from "../libs/axios";
 import { colors } from "../styles/colors";
 import { toast } from "react-toastify";
+import { Image } from "@chakra-ui/react";
 
 const Product = () => {
   const [product, setProduct] = useState<ProductProps>({} as ProductProps);
@@ -36,7 +37,7 @@ const Product = () => {
     <Container>
       <Content>
         <Left>
-          <img src={product.image} alt="Imagem do produto" />
+          <Image src={product.image} alt="Imagem do produto" />
         </Left>
         <Right>
           <h1>{product.title}</h1>
@@ -76,7 +77,7 @@ const Product = () => {
 const Content = styled.div`
   width: 100%;
   display: flex;
-  margin-top: 10%;
+  margin-top: 18%;
   align-items: center;
   flex-wrap: wrap;
   border-bottom: 1px solid var(--gray);
@@ -106,7 +107,7 @@ const Right = styled.div`
   }
 
   *:not(svg) {
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
   }
   span {
     display: block;

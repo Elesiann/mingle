@@ -3,6 +3,7 @@ import { Heart, MagnifyingGlass, ShoppingCart } from "@phosphor-icons/react";
 import { css, styled } from "styled-components";
 import { Tooltip } from "react-tooltip";
 import { beatAnimation } from "../constants/animations";
+import { Image } from "@chakra-ui/react";
 
 export interface ProductProps {
   id: number;
@@ -20,6 +21,7 @@ export interface ProductProps {
   onClick?: (product: ProductProps) => void;
   onClickFavorite?: (product: ProductProps) => void;
   onClickCart?: (product: ProductProps) => void;
+  onImageLoad?: () => void;
 }
 
 const Product = (product: ProductProps) => {
@@ -65,7 +67,11 @@ const Product = (product: ProductProps) => {
         onMouseLeave={() => setShowOptions(false)}
       >
         <ImageLink href={`/products/${product.id}`}>
-          <ProductImage src={product.image} alt="" />
+          <ProductImage
+            onLoad={product.onImageLoad}
+            src={product.image}
+            alt={product.title}
+          />
         </ImageLink>
         <ProductOptionsContainer>
           <ProductOptions $show={showOptions}>
@@ -119,12 +125,11 @@ const Product = (product: ProductProps) => {
 };
 
 const Container = styled.div`
-  img {
-    width: 100%;
-  }
+  max-width: 300px;
+
   span {
     display: block;
-    margin-block: 0.75rem;
+    margin-block: 0.5rem;
     color: var(--gray);
 
     &:hover {
@@ -150,20 +155,18 @@ const ImageContainer = styled.div`
 const ImageLink = styled.a`
   position: relative;
   display: block;
-  width: 300px;
-  height: 300px;
   overflow: hidden;
   cursor: pointer;
 `;
 
-const ProductImage = styled.img`
-  width: 300px;
-  height: 300px;
+const ProductImage = styled(Image)`
   object-fit: cover;
+  height: 300px;
+  width: 100%;
 `;
 
 const InfoContainer = styled.div`
-  margin-top: 1.5rem;
+  margin-top: 1rem;
   display: flex;
   flex-direction: column;
   align-items: center;
