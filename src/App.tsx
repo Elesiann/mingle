@@ -10,6 +10,7 @@ import Product from "./routes/Product";
 import Cart from "./routes/Cart";
 import Favorites from "./routes/Favorites";
 import Coffees from "./routes/Coffees";
+import Equipments from "./routes/Equipments";
 
 const router = createBrowserRouter([
   {
@@ -25,6 +26,10 @@ const router = createBrowserRouter([
   {
     path: "/coffees",
     element: <Coffees />
+  },
+  {
+    path: "/equipments",
+    element: <Equipments />
   },
   {
     path: "*",
