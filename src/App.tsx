@@ -11,6 +11,7 @@ import Cart from "./routes/Cart";
 import Favorites from "./routes/Favorites";
 import Coffees from "./routes/Coffees";
 import Equipments from "./routes/Equipments";
+import Drinks from "./routes/Drinks";
 
 const router = createBrowserRouter([
   {
@@ -30,6 +31,10 @@ const router = createBrowserRouter([
   {
     path: "/equipments",
     element: <Equipments />
+  },
+  {
+    path: "/drinks",
+    element: <Drinks />
   },
   {
     path: "*",
