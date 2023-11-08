@@ -65,8 +65,12 @@ const CoffeeContainer = styled.div`
   display: grid;
   gap: 2rem;
   justify-content: space-between;
-  grid-template-columns: repeat(3, auto);
   margin-block: 2rem 4rem;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+
+  div {
+    justify-self: center;
+  }
 `;
 
 export default Coffees;
