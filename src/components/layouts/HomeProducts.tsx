@@ -50,6 +50,9 @@ const Content = styled.div`
   display: grid;
   gap: 2rem;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  div {
+    justify-self: center;
+  }
 `;
 
 const Description = styled.div`

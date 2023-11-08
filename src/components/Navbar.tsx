@@ -1,19 +1,23 @@
 import { Button, Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
-import { CaretDown, SignIn, UserCircleGear } from "@phosphor-icons/react";
+import { CaretDown, List, SignIn, UserCircleGear } from "@phosphor-icons/react";
 import { isEmpty } from "lodash";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import styled from "styled-components";
 import { AuthContext } from "../context/authContext";
 import { CartContext } from "../context/cartContext";
 import { colors } from "../styles/colors";
 import { capitalizeFirstName, getFromLocalStorage } from "../utils/utils";
+import MobileNavbar from "./layouts/MobileNavbar";
 import RegisterSidebar from "./layouts/RegisterSidebar";
 import UserSidebar from "./layouts/UserSidebar";
+import { useMediaQuery } from "react-responsive";
 
 const NavBar = () => {
   const { openNavbar, setOpenNavbar } = useContext(CartContext);
+  const [expandNavbar, setExpandNavbar] = useState(false);
   const user = getFromLocalStorage("user");
   const authContext = useContext(AuthContext);
+  const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
 
   const renderUserData = () => {
     return (
@@ -37,38 +41,52 @@ const NavBar = () => {
     return <>{isEmpty(user) ? renderLoginData() : renderUserData()}</>;
   };
 
+  const renderMobileNavbar = () => {
+    return <MobileNavbar onClose={() => setExpandNavbar(false)} />;
+  };
+
   const renderNavLinksList = () => {
     return (
       <NavList>
-        <NavItem>
-          <NavLink href="/">Home</NavLink>
-        </NavItem>
-        <Menu>
-          <MenuButton
-            _expanded={{ bg: colors.gunmetal }}
-            as={Button}
-            rightIcon={<CaretDown />}
-          >
-            Categorias
-          </MenuButton>
-          <MenuList>
-            <CustomMenuItem as="a" href="/coffees">
-              Cafés
-            </CustomMenuItem>
-            <CustomMenuItem as="a" href="/equipments">
-              Equipamentos
-            </CustomMenuItem>
-            <CustomMenuItem as="a" href="/drinks">
-              Bebidas prontas
-            </CustomMenuItem>
-          </MenuList>
-        </Menu>
-        <NavItem>
-          <NavLink href="/promo">Promoções</NavLink>
-        </NavItem>
-        <NavItem>
-          <NavLink href="/local">Onde estamos</NavLink>
-        </NavItem>
+        {!isMobile ? (
+          <>
+            <NavItem>
+              <NavLink href="/">Home</NavLink>
+            </NavItem>
+            <Menu>
+              <MenuButton
+                _expanded={{ bg: colors.gunmetal }}
+                as={Button}
+                rightIcon={<CaretDown />}
+              >
+                Categorias
+              </MenuButton>
+              <MenuList>
+                <CustomMenuItem as="a" href="/coffees">
+                  Cafés
+                </CustomMenuItem>
+                <CustomMenuItem as="a" href="/equipments">
+                  Equipamentos
+                </CustomMenuItem>
+                <CustomMenuItem as="a" href="/drinks">
+                  Bebidas prontas
+                </CustomMenuItem>
+              </MenuList>
+            </Menu>
+            <NavItem>
+              <NavLink href="/promo">Promoções</NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink href="/local">Onde estamos</NavLink>
+            </NavItem>
+          </>
+        ) : (
+          <NavItem onClick={() => setExpandNavbar(true)}>
+            <NavLink>
+              <List size={32} />
+            </NavLink>
+          </NavItem>
+        )}
       </NavList>
     );
   };
@@ -81,6 +99,7 @@ const NavBar = () => {
           {renderLoginOrUser()}
         </NavContainer>
       </CustomContainer>
+      {expandNavbar && renderMobileNavbar()}
       <RegisterSidebar
         user={user}
         showSidebar={openNavbar === "login"}
@@ -102,7 +121,7 @@ const CustomContainer = styled.div`
   position: absolute;
   max-width: 1200px;
   width: 100%;
-  top: 2rem;
+  top: 0;
   z-index: 9;
   left: 50%;
   transform: translateX(-50%);
@@ -116,7 +135,8 @@ const NavContainer = styled.nav`
   justify-content: space-between;
   align-items: center;
   padding: 1.5rem;
-  border-radius: 0.5rem;
+  border-bottom-left-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem;
   box-shadow: 0px 8px 8px rgba(0, 0, 0, 0.1);
 
   li,
@@ -173,22 +193,12 @@ const NavItem = styled.li`
   padding: 0.45rem;
   border-radius: 8px;
 
-  svg {
-    margin-left: 0.5rem;
-    transform: rotate(-90deg);
-    margin-top: 1.5px;
-  }
-
   &:hover {
     cursor: pointer;
     background-color: var(--gunmetal);
     * {
       color: var(--babyPowder);
       fill: var(--babyPowder);
-    }
-    svg {
-      margin-left: 2rem;
-      transform: rotate(0deg);
     }
   }
 `;

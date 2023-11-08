@@ -31,6 +31,9 @@ const Content = styled.div`
   display: flex;
   justify-content: space-between;
   margin-bottom: 4rem;
+  @media screen and (max-width: 768px) {
+    flex-direction: column-reverse;
+  }
 `;
 const Left = styled.div`
   width: 35%;
@@ -47,12 +50,25 @@ const Left = styled.div`
     margin-block: 2rem;
     color: var(--gray);
   }
+
+  @media screen and (max-width: 768px) {
+    width: 100%;
+
+    button {
+      width: 100%;
+    }
+  }
 `;
 const Right = styled.div`
   width: 60%;
 
   img {
     width: 100%;
+  }
+
+  @media screen and (max-width: 768px) {
+    width: 100%;
+    margin-bottom: 2rem;
   }
 `;
 

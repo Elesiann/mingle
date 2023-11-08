@@ -58,6 +58,10 @@ const Content = styled.div`
   gap: 2rem;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   margin-bottom: 4rem;
+
+  div {
+    justify-self: center;
+  }
 `;
 
 const Description = styled.div`

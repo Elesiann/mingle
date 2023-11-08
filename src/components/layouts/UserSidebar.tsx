@@ -65,6 +65,11 @@ const Container = styled.div<{ $show: boolean }>`
   width: 400px;
   height: 100%;
   background-color: var(--bgWhite);
+
+  @media screen and (max-width: 768px) {
+    width: 100%;
+    right: ${(props) => (props.$show ? "0" : "-100%")};
+  }
 `;
 const Content = styled.div`
   padding: 3rem 2rem;

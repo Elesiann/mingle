@@ -1,6 +1,4 @@
 import { styled } from "styled-components";
-import { colors } from "../../styles/colors";
-import Button from "../Button";
 
 const HomeHeader = () => {
   return (
@@ -15,14 +13,6 @@ const HomeHeader = () => {
           Comece seu dia com <br />
           um café delicioso
         </h1>
-        <Button
-          uppercase
-          color={colors.firefly}
-          textColor={colors.navajo}
-          // todo
-          onClick={() => console.log("click")}
-          text="Quero Conhecer"
-        />
       </Content>
     </Container>
   );

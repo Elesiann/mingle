@@ -67,6 +67,10 @@ const Content = styled.div`
     font-weight: bold;
     color: var(--firefly);
   }
+
+  @media screen and (max-width: 768px) {
+    flex-direction: column;
+  }
 `;
 
 const Left = styled.div`
@@ -76,6 +80,9 @@ const Left = styled.div`
     width: 100%;
     height: 100%;
     object-fit: cover;
+  }
+  @media screen and (max-width: 768px) {
+    width: 100%;
   }
 `;
 
@@ -100,6 +107,20 @@ const Checkout = styled.div`
     font-size: 2rem;
     font-weight: 700;
   }
+
+  @media screen and (max-width: 768px) {
+    width: 100%;
+    position: relative;
+    margin-bottom: 2rem;
+
+    h2 {
+      font-size: 1.5rem;
+    }
+
+    button {
+      width: 100%;
+    }
+  }
 `;
 
 const Right = styled.div`
@@ -116,21 +137,32 @@ const Right = styled.div`
     align-items: center;
     display: flex;
 
-    button {
-      margin-block: 2rem;
-    }
-
     h2 {
       display: block;
       font-size: 1.5rem;
       margin-bottom: 2rem;
     }
     p {
+      margin-bottom: 2rem;
       color: var(--gray);
     }
   }
   img {
     width: 100%;
+    margin-top: 2rem;
+  }
+
+  @media screen and (max-width: 768px) {
+    width: 100%;
+    padding-left: unset;
+
+    text-align: center;
+
+    div {
+      h2 {
+        margin-bottom: 1rem;
+      }
+    }
   }
 `;
 
