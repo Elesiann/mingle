@@ -73,7 +73,7 @@ const Auth = ({ children }: PropsWithChildren) => {
   const handleLogout = async () => {
     await auth.signOut().then(() => {
       toast.success("Você saiu da sua conta com sucesso!");
-      localStorage.removeItem("user");
+      localStorage.clear();
       setUser({} as User);
       window.location.reload();
     });

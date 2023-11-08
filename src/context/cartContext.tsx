@@ -1,6 +1,7 @@
 import { PropsWithChildren, createContext, useEffect, useState } from "react";
 import { ProductProps } from "../components/Product";
 import { useGetLocalStorage } from "../hooks/useLocalstorage";
+import { toast } from "react-toastify";
 
 interface CartContextProps {
   favorites: ProductProps[];
@@ -9,6 +10,8 @@ interface CartContextProps {
   setCart: (product: ProductProps) => void;
   handleRemoveFromFavorites: (product: ProductProps) => ProductProps[];
   handleRemoveFromCart: (product: ProductProps) => ProductProps[];
+  setOpenNavbar: (value: "user" | "login" | "") => void;
+  openNavbar: "user" | "login" | "";
 }
 
 export const CartContext = createContext<CartContextProps>(
@@ -16,8 +19,10 @@ export const CartContext = createContext<CartContextProps>(
 );
 
 const Cart = ({ children }: PropsWithChildren) => {
+  const [openNavbar, setOpenNavbar] = useState<"user" | "login" | "">("");
   const favoritesStorage = useGetLocalStorage("favorites");
   const cartStorage = useGetLocalStorage("cart");
+  const user = useGetLocalStorage("user");
   const [favorites, setFavorites] = useState<ProductProps[]>(
     favoritesStorage || []
   );
@@ -29,6 +34,12 @@ const Cart = ({ children }: PropsWithChildren) => {
   }, [favorites, cart]);
 
   const handleAddToFavorites = (product: ProductProps) => {
+    if (!user) {
+      setOpenNavbar("login");
+      return toast.error(
+        "Você precisa estar logado para adicionar aos favoritos"
+      );
+    }
     if (favorites.some((prod) => prod.id === product.id)) {
       const newFavorites = favorites.filter((prod) => prod.id !== product.id);
       setFavorites(newFavorites);
@@ -38,6 +49,12 @@ const Cart = ({ children }: PropsWithChildren) => {
   };
 
   const handleAddToCart = (product: ProductProps) => {
+    if (!user) {
+      setOpenNavbar("login");
+      return toast.error(
+        "Você precisa estar logado para adicionar ao carrinho"
+      );
+    }
     if (cart.some((prod) => prod.id === product.id)) {
       const newCart = cart.filter((prod) => prod.id !== product.id);
       setCart(newCart);
@@ -66,7 +83,9 @@ const Cart = ({ children }: PropsWithChildren) => {
     setFavorites: handleAddToFavorites,
     setCart: handleAddToCart,
     handleRemoveFromFavorites,
-    handleRemoveFromCart
+    handleRemoveFromCart,
+    setOpenNavbar,
+    openNavbar
   };
   return (
     <CartContext.Provider value={context}>{children}</CartContext.Provider>

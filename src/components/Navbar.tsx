@@ -1,16 +1,17 @@
 import { Button, Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
 import { CaretDown, SignIn, UserCircleGear } from "@phosphor-icons/react";
 import { isEmpty } from "lodash";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import styled from "styled-components";
 import { AuthContext } from "../context/authContext";
+import { CartContext } from "../context/cartContext";
 import { colors } from "../styles/colors";
 import { capitalizeFirstName, getFromLocalStorage } from "../utils/utils";
 import RegisterSidebar from "./layouts/RegisterSidebar";
 import UserSidebar from "./layouts/UserSidebar";
 
 const NavBar = () => {
-  const [openNavbar, setOpenNavbar] = useState<"user" | "login" | "">("");
+  const { openNavbar, setOpenNavbar } = useContext(CartContext);
   const user = getFromLocalStorage("user");
   const authContext = useContext(AuthContext);
 
