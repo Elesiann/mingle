@@ -4,7 +4,8 @@ import {
   ModalCloseButton,
   ModalContent,
   ModalHeader,
-  ModalOverlay
+  ModalOverlay,
+  Spinner
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { styled } from "styled-components";
@@ -24,6 +25,7 @@ export default function Drinks() {
   const [drinks, setDrinks] = useState<IDrink[]>([]);
   const [translatedDescription, setTranslatedDescription] = useState("");
   const [selectedDrink, setSelectedDrink] = useState<IDrink | null>(null);
+  const [loading, setLoading] = useState(false);
   const { getTranslation } = useTranslation();
 
   const getCoffees = async () => {
@@ -41,14 +43,17 @@ export default function Drinks() {
   };
 
   const handleOpenModal = async (drink: IDrink) => {
-    const translated = await getTranslation(drink.description || "");
-    setTranslatedDescription(translated.data.translations[0].translatedText);
     setSelectedDrink(drink);
+    setLoading(true);
+    const translated = await getTranslation(drink.description || "");
+    setLoading(false);
+    setTranslatedDescription(translated.data.translations[0].translatedText);
   };
 
   const renderModal = () => {
     return (
       <Modal
+        size={"xl"}
         isCentered
         motionPreset="none"
         isOpen={!!selectedDrink}
@@ -59,14 +64,20 @@ export default function Drinks() {
           <ModalHeader>{selectedDrink?.title}</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <div>
-              <img
-                style={{ maxHeight: "50vh" }}
-                src={selectedDrink?.image}
-                alt=""
-              />
-            </div>
-            <div>{translatedDescription}</div>
+            {loading ? (
+              <LoadingContainer>
+                <Spinner size={"lg"} color="green.500" />
+              </LoadingContainer>
+            ) : (
+              <ModalCoffeeContent>
+                <div>
+                  <img src={selectedDrink?.image} alt="" />
+                </div>
+                <div>
+                  <p>{translatedDescription}</p>
+                </div>
+              </ModalCoffeeContent>
+            )}
           </ModalBody>
         </ModalContent>
       </Modal>
@@ -80,7 +91,7 @@ export default function Drinks() {
         <h1>
           Bebidas <span>descubra nossas especialidades</span>
         </h1>
-        <EquipmentContainer>
+        <DrinksContainer>
           {drinks.map((drink) => (
             <DrinkContainer key={drink.id}>
               <Drink>
@@ -93,7 +104,7 @@ export default function Drinks() {
               </Drink>
             </DrinkContainer>
           ))}
-        </EquipmentContainer>
+        </DrinksContainer>
       </Content>
     </Container>
   );
@@ -110,12 +121,12 @@ const Content = styled.div`
     }
   }
 `;
-const EquipmentContainer = styled.div`
+const DrinksContainer = styled.div`
   width: 100%;
   display: grid;
   gap: 2rem;
   justify-content: space-between;
-  grid-template-columns: repeat(4, auto);
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   margin-block: 2rem 4rem;
 `;
 
@@ -125,6 +136,7 @@ const DrinkContainer = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  position: relative;
 
   img {
     width: 200px;
@@ -151,4 +163,48 @@ const Drink = styled.div`
   justify-content: center;
   flex-direction: column;
   align-items: center;
+`;
+
+const LoadingContainer = styled.div`
+  display: flex;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+
+  margin-block: 2rem;
+`;
+
+const ModalCoffeeContent = styled.div`
+  display: flex;
+  padding: 0 0 2rem 0;
+  justify-content: space-between;
+  align-items: center;
+
+  img {
+    min-width: 250px;
+    max-width: 250px;
+  }
+
+  p {
+    color: var(--dark);
+    font-weight: bold;
+    margin-left: 2rem;
+  }
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+
+    img {
+      margin-bottom: 2rem;
+      width: 100%;
+      min-width: unset;
+      max-width: unset;
+    }
+
+    p {
+      margin-left: 0;
+      text-align: center;
+    }
+  }
 `;
