@@ -24,6 +24,10 @@ const AppContainer = styled.section`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+
+  @media screen and (max-width: 768px) {
+    padding: 0 1rem;
+  }
 `;
 
 export default Container;

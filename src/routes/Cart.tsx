@@ -88,20 +88,22 @@ const Cart = () => {
       <div>
         {cart.map((item: ProductProps) => (
           <MobileCartItem key={item.id}>
-            <img src={item.image} alt={item.title} />
-            <div>
-              <h2>{item.title}</h2>
-              <h3>R$ {item.totalPrice},00</h3>
-              <MobileQuantityContainer>
+            <MobileQuantityContainer>
+              <div>
                 <button onClick={() => handleUpdateQuantity(item, false)}>
-                  <MinusCircle size={36} />
+                  <MinusCircle size={24} />
                 </button>{" "}
                 {item.quantity ?? 1}{" "}
                 <button onClick={() => handleUpdateQuantity(item, true)}>
-                  <PlusCircle size={36} />
+                  <PlusCircle size={24} />
                 </button>
-              </MobileQuantityContainer>
-            </div>
+              </div>
+              <img src={item.image} alt={item.title} />
+            </MobileQuantityContainer>
+            <MobilePriceContainer>
+              <h2>{item.title}</h2>
+              <h3>R$ {item.totalPrice},00</h3>
+            </MobilePriceContainer>
           </MobileCartItem>
         ))}
       </div>
@@ -394,28 +396,53 @@ const EmptyCartContainer = styled.div`
 `;
 
 const MobileCartItem = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
   text-align: center;
   margin-bottom: 2rem;
-  border-bottom: 1px solid var(--gray);
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+  padding: 0.75rem;
 
   div {
-    margin-block: 1rem;
-
-    h2 {
-      font-size: 1.35rem;
-      font-weight: bold;
-      color: var(--dark);
-    }
   }
 `;
 
 const MobileQuantityContainer = styled.div`
   display: flex;
+  flex-direction: row;
   justify-content: center;
   align-items: center;
   margin-top: 0.5rem;
+  width: 45%;
+  div {
+    display: flex;
+    flex-direction: column-reverse;
+  }
   button {
     margin-inline: 0.5rem;
+  }
+  img {
+    width: 5rem;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+  }
+`;
+
+const MobilePriceContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: start;
+  width: 50%;
+
+  h2 {
+    font-size: 1rem;
+    font-weight: bold;
+    color: var(--dark);
+  }
+  h3 {
+    color: var(--green);
+    font-size: 0.85rem;
   }
 `;
 
