@@ -111,7 +111,7 @@ export default function Drinks() {
 }
 
 const Content = styled.div`
-  margin-top: 18%;
+  margin-top: 20vh;
   width: 100%;
 
   h1 {

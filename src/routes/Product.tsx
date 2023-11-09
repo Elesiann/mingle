@@ -77,7 +77,7 @@ const Product = () => {
 const Content = styled.div`
   width: 100%;
   display: flex;
-  margin-top: 18%;
+  margin-top: 20vh;
   align-items: center;
   flex-wrap: wrap;
   border-bottom: 1px solid var(--gray);

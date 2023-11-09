@@ -17,8 +17,10 @@ import { toast } from "react-toastify";
 import EmptyCartImage from "../assets/images/empty-cart.png";
 import { colors } from "../styles/colors";
 import { useCartUtils } from "../hooks/useCart";
+import { useMediaQuery } from "react-responsive";
 
 const Cart = () => {
+  const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
   const { handleRemoveFromCart } = useCartUtils();
   const [itemToRemove, setItemToRemove] = useState<ProductProps | null>(null);
   const [openModal, setOpenModal] = useState(false);
@@ -81,6 +83,31 @@ const Cart = () => {
     }
   };
 
+  const renderMobileCartItems = () => {
+    return (
+      <div>
+        {cart.map((item: ProductProps) => (
+          <MobileCartItem key={item.id}>
+            <img src={item.image} alt={item.title} />
+            <div>
+              <h2>{item.title}</h2>
+              <h3>R$ {item.totalPrice},00</h3>
+              <MobileQuantityContainer>
+                <button onClick={() => handleUpdateQuantity(item, false)}>
+                  <MinusCircle size={36} />
+                </button>{" "}
+                {item.quantity ?? 1}{" "}
+                <button onClick={() => handleUpdateQuantity(item, true)}>
+                  <PlusCircle size={36} />
+                </button>
+              </MobileQuantityContainer>
+            </div>
+          </MobileCartItem>
+        ))}
+      </div>
+    );
+  };
+
   return (
     <Container>
       {openModal && (
@@ -116,47 +143,56 @@ const Cart = () => {
           ) : (
             <>
               <Left>
-                <TableContainer>
-                  <Table>
-                    <Thead>
-                      <Th>Produto</Th>
-                      <Th>Preço un.</Th>
-                      <Th>Qtde.</Th>
-                      <Th>Total</Th>
-                    </Thead>
-                    <Tbody>
-                      {cart.map((item: ProductProps) => (
-                        <Tr key={item.id}>
-                          <CustomCell>
-                            <img src={item.image} alt={item.title} />
-                            <div>{item.title}</div>
-                          </CustomCell>
-                          <Td>{item.price}</Td>
-                          <Td>
-                            <div
-                              style={{ display: "flex", alignItems: "center" }}
-                            >
-                              <button
-                                onClick={() =>
-                                  handleUpdateQuantity(item, false)
-                                }
+                {!isMobile ? (
+                  <TableContainer>
+                    <Table>
+                      <Thead>
+                        <Th>Produto</Th>
+                        <Th>Preço un.</Th>
+                        <Th>Qtde.</Th>
+                        <Th>Total</Th>
+                      </Thead>
+                      <Tbody>
+                        {cart.map((item: ProductProps) => (
+                          <Tr key={item.id}>
+                            <CustomCell>
+                              <img src={item.image} alt={item.title} />
+                              <div>{item.title}</div>
+                            </CustomCell>
+                            <Td>{item.price}</Td>
+                            <Td>
+                              <div
+                                style={{
+                                  display: "flex",
+                                  alignItems: "center"
+                                }}
                               >
-                                <MinusCircle size={24} />
-                              </button>{" "}
-                              {item.quantity ?? 1}{" "}
-                              <button
-                                onClick={() => handleUpdateQuantity(item, true)}
-                              >
-                                <PlusCircle size={24} />
-                              </button>
-                            </div>
-                          </Td>
-                          <Td>{item.price * (item.quantity ?? 1)}</Td>
-                        </Tr>
-                      ))}
-                    </Tbody>
-                  </Table>
-                </TableContainer>
+                                <button
+                                  onClick={() =>
+                                    handleUpdateQuantity(item, false)
+                                  }
+                                >
+                                  <MinusCircle size={24} />
+                                </button>{" "}
+                                {item.quantity ?? 1}{" "}
+                                <button
+                                  onClick={() =>
+                                    handleUpdateQuantity(item, true)
+                                  }
+                                >
+                                  <PlusCircle size={24} />
+                                </button>
+                              </div>
+                            </Td>
+                            <Td>{item.price * (item.quantity ?? 1)}</Td>
+                          </Tr>
+                        ))}
+                      </Tbody>
+                    </Table>
+                  </TableContainer>
+                ) : (
+                  renderMobileCartItems()
+                )}
               </Left>
               <Right>
                 <SummaryContainer>
@@ -185,7 +221,7 @@ const Cart = () => {
 
 const Title = styled.div`
   margin-block: 2rem;
-  margin-top: 18%;
+  margin-top: 20vh;
   h1 {
     color: var(--dark);
     font-size: 2rem;
@@ -199,14 +235,21 @@ const Content = styled.div`
   display: flex;
   justify-content: space-between;
   margin-block: 0 10%;
+
+  @media screen and (max-width: 768px) {
+    flex-direction: column;
+    margin-block: 0;
+  }
 `;
 
 const Left = styled.div`
   width: 65%;
   position: relative;
 
-  img {
-    width: 125px;
+  table {
+    img {
+      width: 125px;
+    }
   }
 
   td,
@@ -228,6 +271,11 @@ const Left = styled.div`
   div {
     font-weight: bold;
     color: var(--dark);
+  }
+
+  @media screen and (max-width: 768px) {
+    width: 100%;
+    margin-bottom: 2rem;
   }
 `;
 
@@ -301,6 +349,12 @@ const Right = styled.div`
     font-weight: bold;
     font-size: 1.15rem;
   }
+
+  @media screen and (max-width: 768px) {
+    width: 100%;
+    position: relative;
+    margin-bottom: 2rem;
+  }
 `;
 
 const EmptyCartContainer = styled.div`
@@ -336,6 +390,32 @@ const EmptyCartContainer = styled.div`
     &:hover {
       background-color: var(--gunmetal);
     }
+  }
+`;
+
+const MobileCartItem = styled.div`
+  text-align: center;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid var(--gray);
+
+  div {
+    margin-block: 1rem;
+
+    h2 {
+      font-size: 1.35rem;
+      font-weight: bold;
+      color: var(--dark);
+    }
+  }
+`;
+
+const MobileQuantityContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 0.5rem;
+  button {
+    margin-inline: 0.5rem;
   }
 `;
 

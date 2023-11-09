@@ -18,24 +18,12 @@ const MobileNavbar = (props: MobileNavbarProps) => {
       </ModalHeader>
       <ModalBody>
         <ul>
-          <a href="/">
-            <li>Home</li>
-          </a>
-          <a href="/coffees">
-            <li>Cafés</li>
-          </a>
-          <a href="/equipments">
-            <li>Equipamentos</li>
-          </a>
-          <a href="/drinks">
-            <li>Bebidas prontas</li>
-          </a>
-          <a href="/promo">
-            <li>Promoções</li>
-          </a>
-          <a href="/local">
-            <li>Onde estamos</li>
-          </a>
+          <a href="/">Home</a>
+          <a href="/coffees">Cafés</a>
+          <a href="/equipments">Equipamentos</a>
+          <a href="/drinks">Bebidas prontas</a>
+          <a href="/promo">Promoções</a>
+          <a href="/local">Onde estamos</a>
         </ul>
       </ModalBody>
     </MobileNavbarContainer>
@@ -66,7 +54,6 @@ const ModalHeader = styled.div`
     &:hover {
       color: var(--firefly);
       transform: rotate(90deg);
-      background-color: var(--papaya);
     }
   }
 `;
@@ -76,16 +63,18 @@ const ModalBody = styled.div`
   padding: 1rem;
 
   ul {
-    li {
+    a {
+      display: block;
       margin-bottom: 0.5rem;
       font-size: 1.2rem;
       font-family: var(--secondary-font);
       font-weight: 400;
       cursor: pointer;
       padding: 0.5rem 1rem;
+
       &:hover {
-        color: var(--papaya);
         background-color: var(--firefly);
+        color: var(--papaya);
         border-radius: 0.25rem;
       }
     }
