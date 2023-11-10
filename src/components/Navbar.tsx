@@ -74,9 +74,6 @@ const NavBar = () => {
               </MenuList>
             </Menu>
             <NavItem>
-              <NavLink href="/promo">Promoções</NavLink>
-            </NavItem>
-            <NavItem>
               <NavLink href="/local">Onde estamos</NavLink>
             </NavItem>
           </>

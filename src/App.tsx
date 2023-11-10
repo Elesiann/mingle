@@ -12,6 +12,7 @@ import Favorites from "./routes/Favorites";
 import Coffees from "./routes/Coffees";
 import Equipments from "./routes/Equipments";
 import Drinks from "./routes/Drinks";
+import FindUs from "./routes/FindUs";
 
 const router = createBrowserRouter([
   {
@@ -35,6 +36,10 @@ const router = createBrowserRouter([
   {
     path: "/drinks",
     element: <Drinks />
+  },
+  {
+    path: "/about",
+    element: <FindUs />
   },
   {
     path: "*",
