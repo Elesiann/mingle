@@ -4,6 +4,7 @@ import { css, styled } from "styled-components";
 import { Tooltip } from "react-tooltip";
 import { beatAnimation } from "../constants/animations";
 import { Image } from "@chakra-ui/react";
+import ModalProduct from "./ModalProduct";
 
 export interface ProductProps {
   id: number;
@@ -31,6 +32,7 @@ const Product = (product: ProductProps) => {
     cartAnimation: false
   });
   const [randomID] = useState(String(Math.random()));
+  const [showModal, setShowModal] = useState<ProductProps | null>(null);
 
   const handleAnimation = (animationType: "cart" | "heart") => {
     const updatedAnimations = {
@@ -61,66 +63,75 @@ const Product = (product: ProductProps) => {
   }, [animations]);
 
   return (
-    <Container>
-      <ImageContainer
-        onMouseOver={() => setShowOptions(true)}
-        onMouseLeave={() => setShowOptions(false)}
-      >
-        <ImageLink href={`/products/${product.id}`}>
-          <ProductImage
-            onLoad={product.onImageLoad}
-            src={product.image}
-            alt={product.title}
-          />
-        </ImageLink>
-        <ProductOptionsContainer>
-          <ProductOptions $show={showOptions}>
-            <>
-              <Tooltip id={randomID} />
-              <CartIcon
-                $isincart={product.isInCart}
-                $animation={animations.cartAnimation}
-                onClick={() => handleAnimation("cart")}
-                data-tooltip-id={randomID}
-                data-tooltip-content={`${
-                  product.isInCart ? "Remover do " : "Adicionar ao"
-                } carrinho`}
-                data-tooltip-place="top"
-                size={24}
-              />
-            </>
-            <>
-              <Tooltip id={randomID} />
-              <MagnifyingGlass
-                data-tooltip-id={randomID}
-                data-tooltip-content="Visualizar"
-                data-tooltip-place="top"
-                size={24}
-              />
-            </>
-            <>
-              <Tooltip id={randomID} />
-              <HeartIcon
-                $isfavorite={product.isFavorite}
-                $animation={animations.heartAnimation}
-                onClick={() => handleAnimation("heart")}
-                data-tooltip-id={randomID}
-                data-tooltip-content={`${
-                  product.isFavorite ? "Remover dos" : "Adicionar aos"
-                } favoritos`}
-                data-tooltip-place="top"
-                size={24}
-              />
-            </>
-          </ProductOptions>
-        </ProductOptionsContainer>
-      </ImageContainer>
-      <InfoContainer>
-        <h3>{product.title}</h3>
-        <span>{product.category}</span>
-        <Price>R$ {product.price}</Price>
-      </InfoContainer>
-    </Container>
+    <>
+      <ModalProduct
+        selectedProduct={showModal}
+        handleCloseModal={() => setShowModal(null)}
+        loading={false}
+        description={product.description || ""}
+      />
+      <Container>
+        <ImageContainer
+          onMouseOver={() => setShowOptions(true)}
+          onMouseLeave={() => setShowOptions(false)}
+        >
+          <ImageLink href={`/products/${product.id}`}>
+            <ProductImage
+              onLoad={product.onImageLoad}
+              src={product.image}
+              alt={product.title}
+            />
+          </ImageLink>
+          <ProductOptionsContainer>
+            <ProductOptions $show={showOptions}>
+              <>
+                <Tooltip id={randomID} />
+                <CartIcon
+                  $isincart={product.isInCart}
+                  $animation={animations.cartAnimation}
+                  onClick={() => handleAnimation("cart")}
+                  data-tooltip-id={randomID}
+                  data-tooltip-content={`${
+                    product.isInCart ? "Remover do " : "Adicionar ao"
+                  } carrinho`}
+                  data-tooltip-place="top"
+                  size={24}
+                />
+              </>
+              <>
+                <Tooltip id={randomID} />
+                <MagnifyingGlass
+                  onClick={() => setShowModal(product)}
+                  data-tooltip-id={randomID}
+                  data-tooltip-content="Visualizar"
+                  data-tooltip-place="top"
+                  size={24}
+                />
+              </>
+              <>
+                <Tooltip id={randomID} />
+                <HeartIcon
+                  $isfavorite={product.isFavorite}
+                  $animation={animations.heartAnimation}
+                  onClick={() => handleAnimation("heart")}
+                  data-tooltip-id={randomID}
+                  data-tooltip-content={`${
+                    product.isFavorite ? "Remover dos" : "Adicionar aos"
+                  } favoritos`}
+                  data-tooltip-place="top"
+                  size={24}
+                />
+              </>
+            </ProductOptions>
+          </ProductOptionsContainer>
+        </ImageContainer>
+        <InfoContainer>
+          <h3>{product.title}</h3>
+          <span>{product.category}</span>
+          <Price>R$ {product.price}</Price>
+        </InfoContainer>
+      </Container>
+    </>
   );
 };
 
