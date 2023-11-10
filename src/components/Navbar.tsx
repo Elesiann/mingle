@@ -74,7 +74,7 @@ const NavBar = () => {
               </MenuList>
             </Menu>
             <NavItem>
-              <NavLink href="/local">Onde estamos</NavLink>
+              <NavLink href="/about">Onde estamos</NavLink>
             </NavItem>
           </>
         ) : (

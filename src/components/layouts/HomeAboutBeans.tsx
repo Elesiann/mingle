@@ -13,7 +13,9 @@ const HomeAboutBeans = () => {
             para que você possa ter a melhor experiência possível ao saborear
             seu café.
           </p>
-          <Button text={"Conhecer"} onClick={() => null} />
+          <a href="/coffees">
+            <Button text={"Conhecer"} onClick={() => null} />
+          </a>
         </Left>
         <Right>
           <img

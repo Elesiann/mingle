@@ -22,7 +22,7 @@ const MobileNavbar = (props: MobileNavbarProps) => {
           <a href="/coffees">Cafés</a>
           <a href="/equipments">Equipamentos</a>
           <a href="/drinks">Bebidas prontas</a>
-          <a href="/local">Onde estamos</a>
+          <a href="/about">Onde estamos</a>
         </ul>
       </ModalBody>
     </MobileNavbarContainer>

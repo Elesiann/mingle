@@ -21,7 +21,7 @@ const HomeCheckCTA = () => {
             <p>
               Venha conhecer nosso espaço e saborear nossos incríveis cafés.
             </p>
-            <a href="/sobre">
+            <a href="/about">
               <Button
                 style="filled"
                 text="Descubra"
@@ -37,7 +37,7 @@ const HomeCheckCTA = () => {
           <div>
             <h2>Experimente nossos cafés</h2>
             <p>Dúvidas em qual comprar?</p>
-            <a href="/bebidas">
+            <a href="/drinks">
               <Button
                 text="Conheça nossas bebidas"
                 onClick={() => null}
