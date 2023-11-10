@@ -1,12 +1,11 @@
+import { Spinner } from "@chakra-ui/spinner";
 import { X } from "@phosphor-icons/react";
-import { useState, useEffect } from "react";
-import { styled } from "styled-components";
-import RegisterForm from "./RegisterForm";
-import SocialLoginForm from "./SocialLoginForm";
 import { User } from "firebase/auth";
 import { isEmpty } from "lodash";
-import { Spinner } from "@chakra-ui/spinner";
+import { useEffect, useState } from "react";
+import { styled } from "styled-components";
 import { colors } from "../../styles/colors";
+import RegisterForm from "./RegisterForm";
 interface SidebarProps {
   showSidebar: boolean;
   callback: () => void;
@@ -62,7 +61,6 @@ const RegisterSidebar = (props: SidebarProps) => {
                 setIsLoading={(v) => setIsLoading(v)}
                 type={formState}
               />
-              <SocialLoginForm />
             </FormContainer>
             <div>{renderToggleText()}</div>
           </Content>

@@ -1,8 +1,9 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import Input from "../Input";
 import InputButton from "../InputButton";
 import { AuthContext } from "../../context/authContext";
+import SocialLoginForm from "./SocialLoginForm";
 
 export interface RegisterInputs {
   name?: string;
@@ -32,6 +33,12 @@ export default function RegisterForm(props: RegisterFormProps) {
     }
   });
 
+  useEffect(() => {
+    if (authContext.user) {
+      props.setIsLoading(false);
+    }
+  }, [authContext.user]);
+
   const handleSubmitForm = async (data: RegisterInputs) => {
     props.setIsLoading(true);
     props.type === "register"
@@ -42,6 +49,12 @@ export default function RegisterForm(props: RegisterFormProps) {
 
   const onSubmit = (data: RegisterInputs) => {
     handleSubmitForm(data);
+  };
+
+  const handleGoogleLogin = async () => {
+    props.setIsLoading(true);
+    await authContext.handleGoogleLogin();
+    props.setIsLoading(false);
   };
 
   return (
@@ -81,6 +94,8 @@ export default function RegisterForm(props: RegisterFormProps) {
       )}
 
       <InputButton type="submit" text="Enviar" />
+
+      <SocialLoginForm onLogin={handleGoogleLogin} />
     </form>
   );
 }

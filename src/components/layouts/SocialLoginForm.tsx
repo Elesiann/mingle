@@ -1,10 +1,15 @@
 import { GoogleLoginButton } from "react-social-login-buttons";
 import { styled } from "styled-components";
-const SocialLoginForm = () => {
+
+interface ISocialLoginProps {
+  onLogin: () => void;
+}
+
+const SocialLoginForm = (props: ISocialLoginProps) => {
   return (
     <Container>
       <h3>OU</h3>
-      <GoogleLoginButton text="Entrar com o Google" />
+      <GoogleLoginButton onClick={props.onLogin} text="Entrar com o Google" />
     </Container>
   );
 };

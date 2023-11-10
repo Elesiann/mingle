@@ -1,19 +1,23 @@
-import { User } from "firebase/auth";
-import { PropsWithChildren, createContext, useState } from "react";
 import {
+  GoogleAuthProvider,
+  User,
   createUserWithEmailAndPassword,
-  signInWithEmailAndPassword
+  signInWithEmailAndPassword,
+  signInWithPopup
 } from "firebase/auth";
+import { PropsWithChildren, createContext, useState } from "react";
+
 import { updateProfile } from "firebase/auth";
+import { toast } from "react-toastify";
 import { RegisterInputs } from "../components/layouts/RegisterForm";
 import { auth } from "../firebase";
-import { toast } from "react-toastify";
 
 interface AuthContextProps {
   user: User;
   login: (data: RegisterInputs) => Promise<void> | unknown;
   register: (data: RegisterInputs) => Promise<void>;
   logout: () => void;
+  handleGoogleLogin: () => Promise<void>;
 }
 
 export const AuthContext = createContext<AuthContextProps>(
@@ -23,9 +27,8 @@ export const AuthContext = createContext<AuthContextProps>(
 const Auth = ({ children }: PropsWithChildren) => {
   const [user, setUser] = useState<User>({} as User);
 
-  const handleLogin = async (data: RegisterInputs) => {
-    const { email, password } = data;
-    return await signInWithEmailAndPassword(auth, email, password)
+  const signIn = async (email: string, password: string) => {
+    await signInWithEmailAndPassword(auth, email, password)
       .then((userData) => {
         setUser(userData.user);
         localStorage.setItem("user", JSON.stringify(userData.user));
@@ -47,15 +50,36 @@ const Auth = ({ children }: PropsWithChildren) => {
       });
   };
 
+  const handleLogin = async (data: RegisterInputs) => {
+    const { email, password } = data;
+    await signIn(email, password);
+  };
+
   const handleRegister = async (data: RegisterInputs) => {
     const { email, password } = data;
     return await createUserWithEmailAndPassword(auth, email, password)
-      .then(() => {
-        handleUpdateUserName(data);
+      .then(async () => {
+        await handleUpdateUserName(data);
+        await signIn(email, password);
       })
       .catch((error) => {
         console.log(error.code);
         console.log(error.message);
+      });
+  };
+
+  const handleGoogleLogin = async () => {
+    const provider = new GoogleAuthProvider();
+    await signInWithPopup(auth, provider)
+      .then((result) => {
+        const user = result.user;
+        localStorage.setItem("user", JSON.stringify(user));
+        setUser(user as User);
+        return toast.success("Login realizado com sucesso!");
+      })
+      .catch((error) => {
+        console.log(error.code);
+        toast.error(error.message);
       });
   };
 
@@ -83,7 +107,8 @@ const Auth = ({ children }: PropsWithChildren) => {
     user,
     login: (data: RegisterInputs) => handleLogin(data),
     register: (data: RegisterInputs) => handleRegister(data),
-    logout: handleLogout
+    logout: handleLogout,
+    handleGoogleLogin
   };
 
   return (
