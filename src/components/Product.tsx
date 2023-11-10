@@ -127,7 +127,7 @@ const Product = (product: ProductProps) => {
         </ImageContainer>
         <InfoContainer>
           <h3>{product.title}</h3>
-          <span>{product.category}</span>
+          <span>{product.type === "coffee" ? "Café" : "Equipamento"}</span>
           <Price>R$ {product.price}</Price>
         </InfoContainer>
       </Container>
@@ -142,12 +142,6 @@ const Container = styled.div`
     display: block;
     margin-block: 0.5rem;
     color: var(--gray);
-
-    &:hover {
-      color: var(--bgBlack);
-      cursor: pointer;
-      text-decoration: underline;
-    }
   }
 `;
 
