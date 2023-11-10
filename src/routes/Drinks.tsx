@@ -22,6 +22,7 @@ export default function Drinks() {
   const { getTranslation } = useTranslation();
 
   const getCoffees = async () => {
+    document.title = "Bebidas | Mingle";
     const res = await api.get("https://api.sampleapis.com/coffee/hot");
 
     setDrinks(res.data);

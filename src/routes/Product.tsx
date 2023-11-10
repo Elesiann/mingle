@@ -20,6 +20,7 @@ const Product = () => {
   const { id } = useParams();
 
   useEffect(() => {
+    document.title = "Produtos | Mingle";
     const getProduct = () =>
       api.get(`/products/${id}`).then(
         (response) => {

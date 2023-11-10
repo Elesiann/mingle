@@ -1,10 +1,63 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { useForm, SubmitHandler } from "react-hook-form";
 import ContactInfo from "../components/layouts/ContactInfo";
 import Map from "../components/Map";
 import { Button, Input, Textarea } from "@chakra-ui/react";
 
+interface FormData {
+  nome: string;
+  email: string;
+  assunto: string;
+  mensagem: string;
+}
+
+const FindUs: React.FC = () => {
+  const { register, handleSubmit } = useForm<FormData>();
+
+  useEffect(() => {
+    document.title = "Sobre | Mingle";
+  }, []);
+
+  const onSubmit: SubmitHandler<FormData> = (data) => {
+    console.log(data);
+  };
+
+  return (
+    <Container>
+      <h1>Encontre-nos</h1>
+      <Content>
+        <LeftColumn>
+          <Form onSubmit={handleSubmit(onSubmit)}>
+            <label>Seu nome</label>
+            <Input variant="outline" {...register("nome")} />
+
+            <label>Seu email</label>
+            <Input variant="outline" {...register("email")} />
+
+            <label>Assunto</label>
+            <Input variant="outline" {...register("assunto")} />
+
+            <label>Mensagem</label>
+            <Textarea colorScheme="green" {...register("mensagem")} />
+
+            <Button colorScheme="green" type="submit">
+              Enviar
+            </Button>
+          </Form>
+        </LeftColumn>
+
+        <MiddleColumn>
+          <ContactInfo />
+        </MiddleColumn>
+
+        <RightColumn>
+          <Map />
+        </RightColumn>
+      </Content>
+    </Container>
+  );
+};
 const Container = styled.div`
   padding-top: 15vh;
 
@@ -77,55 +130,5 @@ const Form = styled.form`
     border-color: var(--gray);
   }
 `;
-
-interface FormData {
-  nome: string;
-  email: string;
-  assunto: string;
-  mensagem: string;
-}
-
-const FindUs: React.FC = () => {
-  const { register, handleSubmit } = useForm<FormData>();
-
-  const onSubmit: SubmitHandler<FormData> = (data) => {
-    console.log(data);
-  };
-
-  return (
-    <Container>
-      <h1>Encontre-nos</h1>
-      <Content>
-        <LeftColumn>
-          <Form onSubmit={handleSubmit(onSubmit)}>
-            <label>Seu nome</label>
-            <Input variant="outline" {...register("nome")} />
-
-            <label>Seu email</label>
-            <Input variant="outline" {...register("email")} />
-
-            <label>Assunto</label>
-            <Input variant="outline" {...register("assunto")} />
-
-            <label>Mensagem</label>
-            <Textarea colorScheme="green" {...register("mensagem")} />
-
-            <Button colorScheme="green" type="submit">
-              Enviar
-            </Button>
-          </Form>
-        </LeftColumn>
-
-        <MiddleColumn>
-          <ContactInfo />
-        </MiddleColumn>
-
-        <RightColumn>
-          <Map />
-        </RightColumn>
-      </Content>
-    </Container>
-  );
-};
 
 export default FindUs;

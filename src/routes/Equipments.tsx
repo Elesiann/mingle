@@ -11,7 +11,7 @@ const Equipments = () => {
     useCartUtils();
 
   useEffect(() => {
-    document.title = "Cafés | Mingle";
+    document.title = "Equipamentos | Mingle";
 
     const getCoffees = async () => {
       const response = await api.get("products");

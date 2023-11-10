@@ -14,7 +14,7 @@ import { Heart, ShoppingCart, XCircle } from "@phosphor-icons/react";
 import { colors } from "../styles/colors";
 import { useCartUtils } from "../hooks/useCart";
 import { toast } from "react-toastify";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Tooltip } from "react-tooltip";
 import { useMediaQuery } from "react-responsive";
 
@@ -36,6 +36,10 @@ const Favorites = () => {
     handleAddToCart(item);
     toast.success("Produto adicionado ao carrinho!");
   };
+
+  useEffect(() => {
+    document.title = "Favoritos | Mingle";
+  }, []);
 
   const renderMobileFavorites = () => {
     return (

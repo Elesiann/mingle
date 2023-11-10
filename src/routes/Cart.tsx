@@ -10,7 +10,7 @@ import {
 import { styled } from "styled-components";
 import Container from "../components/Container";
 import { ProductProps } from "../components/Product";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { MinusCircle, PlusCircle, ShoppingCart } from "@phosphor-icons/react";
 import ModalComponent from "../components/Modal";
 import { toast } from "react-toastify";
@@ -31,6 +31,10 @@ const Cart = () => {
     (total: number, item: ProductProps) => total + (item.totalPrice ?? 0),
     0
   );
+
+  useEffect(() => {
+    document.title = "Carrinho | Mingle";
+  }, []);
 
   const renderEmptyCart = () => (
     <EmptyCartContainer>
