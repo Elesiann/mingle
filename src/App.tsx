@@ -1,52 +1,18 @@
-// import { RouterProvider, createHashRouter } from "react-router-dom";
+import { ChakraProvider } from "@chakra-ui/react";
+import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.min.css";
 import NavBar from "./components/Navbar";
-import Homepage from "./routes/Homepage";
 import AuthContext from "./context/authContext";
 import CartContext from "./context/cartContext";
-import "react-toastify/dist/ReactToastify.min.css";
-import { ToastContainer } from "react-toastify";
-import { ChakraProvider } from "@chakra-ui/react";
-import Product from "./routes/Product";
 import Cart from "./routes/Cart";
-import Favorites from "./routes/Favorites";
 import Coffees from "./routes/Coffees";
-import Equipments from "./routes/Equipments";
 import Drinks from "./routes/Drinks";
+import Equipments from "./routes/Equipments";
+import Favorites from "./routes/Favorites";
 import FindUs from "./routes/FindUs";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-
-// const router = createHashRouter([
-//   {
-//     path: "/",
-//     element: <Homepage />
-//   },
-//   {
-//     path: "/products/:id",
-//     element: <Product />
-//   },
-//   { path: "/cart", element: <Cart /> },
-//   { path: "/favorites", element: <Favorites /> },
-//   {
-//     path: "/coffees",
-//     element: <Coffees />
-//   },
-//   {
-//     path: "/equipments",
-//     element: <Equipments />
-//   },
-//   {
-//     path: "/drinks",
-//     element: <Drinks />
-//   },
-//   {
-//     path: "/about",
-//     element: <FindUs />
-//   },
-//   {
-//     path: "*",
-//     element: <div>Not found</div>
-//   }
-// ]);
+import Homepage from "./routes/Homepage";
+import Product from "./routes/Product";
 
 type AppProps = {
   showNavbar: boolean;

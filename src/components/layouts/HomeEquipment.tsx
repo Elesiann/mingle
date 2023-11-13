@@ -1,31 +1,12 @@
-import { useEffect, useState } from "react";
 import { styled } from "styled-components";
+import { Products } from "../../constants/products";
 import { useCartUtils } from "../../hooks/useCart";
-import { api } from "../../libs/axios";
 import Container from "../Container";
-import Product, { ProductProps } from "../Product";
+import Product from "../Product";
 
 const HomeEquipment = () => {
-  const [files, setFiles] = useState<ProductProps[]>([]);
   const { isFavorite, isInCart, handleAddToCart, handleAddToFavorite } =
     useCartUtils();
-
-  useEffect(() => {
-    const getEquipment = async () => {
-      await api
-        .get("/products")
-        .then((res) => {
-          setFiles(
-            res.data
-              .filter((it: ProductProps) => it.type === "equipment")
-              .slice(0, 3)
-          );
-        })
-        .catch((err) => console.log(err));
-    };
-
-    getEquipment();
-  }, []);
 
   return (
     <Container>
@@ -34,8 +15,9 @@ const HomeEquipment = () => {
         <p>Para fazer um café fenomenal.</p>
       </Description>
       <Content>
-        {files &&
-          files.map((item) => (
+        {Products.filter((it) => it.type === "equipment")
+          .slice(0, 3)
+          .map((item) => (
             <Product
               quantity={1}
               totalPrice={item.price}

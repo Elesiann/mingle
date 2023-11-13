@@ -46,6 +46,11 @@ const Cart = () => {
 
   const handleUpdateQuantity = (item: ProductProps, increment: boolean) => {
     const updatedCart = cart.map((cartItem: ProductProps) => {
+      if (!cartItem.quantity) {
+        cartItem.quantity = 1;
+        cartItem.totalPrice = cartItem.price;
+      }
+
       if (
         cartItem.id === item.id &&
         typeof cartItem.quantity !== "undefined" &&
@@ -58,15 +63,18 @@ const Cart = () => {
           if (cartItem.quantity > 1) {
             cartItem.quantity -= 1;
             cartItem.totalPrice -= cartItem.price;
-          } else if (cartItem.quantity === 1) {
+          } else {
             setOpenModal(true);
             setItemToRemove(cartItem);
           }
         }
       } else if (cartItem.quantity === undefined) {
+        setOpenModal(true);
+        setItemToRemove(cartItem);
         cartItem.quantity = 1;
         cartItem.totalPrice = cartItem.price;
       }
+
       return cartItem;
     });
 
