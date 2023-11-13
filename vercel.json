@@ -1,11 +1,11 @@
 {
   "routes": [
     { "src": "/", "dest": "/" },
-    { "src": "/products/:id", "dest": "/" },
-    { "src": "/favorites", "dest": "/" },
-    { "src": "/coffees", "dest": "/" },
-    { "src": "/equipments", "dest": "/" },
-    { "src": "/drinks", "dest": "/" },
-    { "src": "/about", "dest": "/" }
+    { "src": "/products/:id", "dest": "/products/:id" },
+    { "src": "/favorites", "dest": "/favorites" },
+    { "src": "/coffees", "dest": "/coffees" },
+    { "src": "/equipments", "dest": "/equipments" },
+    { "src": "/drinks", "dest": "/drinks" },
+    { "src": "/about", "dest": "/about" }
   ]
 }
