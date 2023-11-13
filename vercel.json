@@ -1,6 +1,4 @@
 {
-  "cleanUrls": true,
-
   "routes": [
     { "src": "/", "dest": "/" },
     { "src": "/products/:id", "dest": "/" },
