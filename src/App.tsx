@@ -1,4 +1,4 @@
-import { RouterProvider, createHashRouter } from "react-router-dom";
+// import { RouterProvider, createHashRouter } from "react-router-dom";
 import NavBar from "./components/Navbar";
 import Homepage from "./routes/Homepage";
 import AuthContext from "./context/authContext";
@@ -13,39 +13,40 @@ import Coffees from "./routes/Coffees";
 import Equipments from "./routes/Equipments";
 import Drinks from "./routes/Drinks";
 import FindUs from "./routes/FindUs";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
-const router = createHashRouter([
-  {
-    path: "/",
-    element: <Homepage />
-  },
-  {
-    path: "/products/:id",
-    element: <Product />
-  },
-  { path: "/cart", element: <Cart /> },
-  { path: "/favorites", element: <Favorites /> },
-  {
-    path: "/coffees",
-    element: <Coffees />
-  },
-  {
-    path: "/equipments",
-    element: <Equipments />
-  },
-  {
-    path: "/drinks",
-    element: <Drinks />
-  },
-  {
-    path: "/about",
-    element: <FindUs />
-  },
-  {
-    path: "*",
-    element: <div>Not found</div>
-  }
-]);
+// const router = createHashRouter([
+//   {
+//     path: "/",
+//     element: <Homepage />
+//   },
+//   {
+//     path: "/products/:id",
+//     element: <Product />
+//   },
+//   { path: "/cart", element: <Cart /> },
+//   { path: "/favorites", element: <Favorites /> },
+//   {
+//     path: "/coffees",
+//     element: <Coffees />
+//   },
+//   {
+//     path: "/equipments",
+//     element: <Equipments />
+//   },
+//   {
+//     path: "/drinks",
+//     element: <Drinks />
+//   },
+//   {
+//     path: "/about",
+//     element: <FindUs />
+//   },
+//   {
+//     path: "*",
+//     element: <div>Not found</div>
+//   }
+// ]);
 
 type AppProps = {
   showNavbar: boolean;
@@ -58,7 +59,19 @@ function App({ showNavbar }: AppProps) {
         <CartContext>
           <AuthContext>
             {showNavbar && <NavBar />}
-            <RouterProvider router={router} />
+            <Router>
+              <Routes>
+                <Route path="/" element={<Homepage />} />
+                <Route path="/products/:id" element={<Product />} />
+                <Route path="/cart" element={<Cart />} />
+                <Route path="/favorites" element={<Favorites />} />
+                <Route path="/coffees" element={<Coffees />} />
+                <Route path="/equipments" element={<Equipments />} />
+                <Route path="/drinks" element={<Drinks />} />
+                <Route path="/about" element={<FindUs />} />
+                <Route path="*" element={<div>Not found</div>} />
+              </Routes>
+            </Router>
             <ToastContainer
               position="top-center"
               autoClose={5000}
