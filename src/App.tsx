@@ -1,4 +1,4 @@
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { RouterProvider, createHashRouter } from "react-router-dom";
 import NavBar from "./components/Navbar";
 import Homepage from "./routes/Homepage";
 import AuthContext from "./context/authContext";
@@ -14,7 +14,7 @@ import Equipments from "./routes/Equipments";
 import Drinks from "./routes/Drinks";
 import FindUs from "./routes/FindUs";
 
-const router = createBrowserRouter([
+const router = createHashRouter([
   {
     path: "/",
     element: <Homepage />
