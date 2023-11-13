@@ -1,24 +1,12 @@
-import { useEffect, useState } from "react";
 import { styled } from "styled-components";
+import { Products } from "../../constants/products";
 import { useCartUtils } from "../../hooks/useCart";
-import { api } from "../../libs/axios";
 import Container from "../Container";
 import Product, { ProductProps } from "../Product";
 
 const HomeProducts = () => {
-  const [files, setFiles] = useState<ProductProps[]>([]);
   const { isFavorite, isInCart, handleAddToCart, handleAddToFavorite } =
     useCartUtils();
-  useEffect(() => {
-    const getProducts = async () => {
-      await api
-        .get("/products")
-        .then((res) => setFiles(res.data.slice(0, 3)))
-        .catch((err) => console.log(err));
-    };
-
-    getProducts();
-  }, []);
 
   return (
     <Container>
@@ -27,19 +15,18 @@ const HomeProducts = () => {
         <p> Nossos pacotes mais vendidos.</p>
       </Description>
       <Content>
-        {files &&
-          files.map((item) => (
-            <Product
-              quantity={1}
-              totalPrice={item.price}
-              key={item.id}
-              {...item}
-              onClickCart={handleAddToCart}
-              onClickFavorite={handleAddToFavorite}
-              isFavorite={isFavorite(item.id)}
-              isInCart={isInCart(item.id)}
-            />
-          ))}
+        {Products.slice(0, 3).map((item: ProductProps) => (
+          <Product
+            quantity={1}
+            totalPrice={item.price}
+            key={item.id}
+            {...item}
+            onClickCart={handleAddToCart}
+            onClickFavorite={handleAddToFavorite}
+            isFavorite={isFavorite(item.id)}
+            isInCart={isInCart(item.id)}
+          />
+        ))}
       </Content>
     </Container>
   );

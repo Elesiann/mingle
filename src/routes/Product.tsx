@@ -8,10 +8,10 @@ import { ProductProps } from "../components/Product";
 import RelatedProducts from "../components/layouts/RelatedProducts";
 import { beatAnimation } from "../constants/animations";
 import { useCartUtils } from "../hooks/useCart";
-import { api } from "../libs/axios";
 import { colors } from "../styles/colors";
 import { toast } from "react-toastify";
 import { Image } from "@chakra-ui/react";
+import { Products } from "../constants/products";
 
 const Product = () => {
   const [product, setProduct] = useState<ProductProps>({} as ProductProps);
@@ -22,13 +22,8 @@ const Product = () => {
   useEffect(() => {
     document.title = "Produtos | Mingle";
     const getProduct = () =>
-      api.get(`/products/${id}`).then(
-        (response) => {
-          setProduct(response.data);
-        },
-        (error) => {
-          console.log(error);
-        }
+      setProduct(
+        Products.find((product) => product.id === Number(id)) as ProductProps
       );
 
     getProduct();

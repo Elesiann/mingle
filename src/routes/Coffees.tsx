@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { api } from "../libs/axios";
-import Product, { ProductProps } from "../components/Product";
-import Container from "../components/Container";
-import { useCartUtils } from "../hooks/useCart";
 import { styled } from "styled-components";
+import Container from "../components/Container";
+import Product, { ProductProps } from "../components/Product";
+import { Products } from "../constants/products";
+import { useCartUtils } from "../hooks/useCart";
 
 const Coffees = () => {
   const [coffees, setCoffees] = useState<ProductProps[]>([]);
@@ -12,16 +12,7 @@ const Coffees = () => {
 
   useEffect(() => {
     document.title = "Cafés | Mingle";
-
-    const getCoffees = async () => {
-      const response = await api.get("products");
-      const data = await response.data.filter(
-        (it: ProductProps) => it.type === "coffee"
-      );
-      setCoffees(data);
-    };
-
-    getCoffees();
+    setCoffees(Products.filter((it: ProductProps) => it.type === "coffee"));
   }, []);
 
   return (

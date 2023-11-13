@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import Container from "../Container";
 import { styled } from "styled-components";
 import Product, { ProductProps } from "../Product";
-import { api } from "../../libs/axios";
 import { useCartUtils } from "../../hooks/useCart";
+import { Products } from "../../constants/products";
 
 const RelatedProducts = () => {
   const { isFavorite, isInCart, handleAddToCart, handleAddToFavorite } =
@@ -11,13 +11,8 @@ const RelatedProducts = () => {
   const [products, setProducts] = useState<ProductProps[]>([]);
 
   useEffect(() => {
-    const getProducts = async () => {
-      const response = await api.get("/products");
-      const slice = Math.floor(Math.random() * (response.data.length - 3));
-      setProducts(response.data.slice(slice, slice + 3));
-    };
-
-    getProducts();
+    const slice = Math.floor(Math.random() * (Products.length - 3));
+    setProducts(Products.slice(slice, slice + 3));
   }, []);
 
   return (

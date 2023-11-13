@@ -16,13 +16,15 @@ export interface ProductProps {
   discount?: number;
   category: string;
   type?: "equipment" | "coffee";
-  isFavorite: boolean;
-  isInCart: boolean;
+  isFavorite?: boolean;
+  isInCart?: boolean;
   quantity?: number;
   onClick?: (product: ProductProps) => void;
   onClickFavorite?: (product: ProductProps) => void;
   onClickCart?: (product: ProductProps) => void;
   onImageLoad?: () => void;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 const Product = (product: ProductProps) => {
@@ -87,7 +89,7 @@ const Product = (product: ProductProps) => {
               <>
                 <Tooltip id={randomID} />
                 <CartIcon
-                  $isincart={product.isInCart}
+                  $isincart={product.isInCart || false}
                   $animation={animations.cartAnimation}
                   onClick={() => handleAnimation("cart")}
                   data-tooltip-id={randomID}
@@ -111,7 +113,7 @@ const Product = (product: ProductProps) => {
               <>
                 <Tooltip id={randomID} />
                 <HeartIcon
-                  $isfavorite={product.isFavorite}
+                  $isfavorite={product.isFavorite || false}
                   $animation={animations.heartAnimation}
                   onClick={() => handleAnimation("heart")}
                   data-tooltip-id={randomID}
