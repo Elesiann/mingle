@@ -5,6 +5,7 @@ import ModalProduct from "../components/ModalProduct";
 import { ProductProps } from "../components/Product";
 import { useTranslation } from "../hooks/useTranslation";
 import { api } from "../libs/axios";
+import { Image } from "@chakra-ui/react";
 
 interface IDrink {
   id: number;
@@ -60,7 +61,9 @@ export default function Drinks() {
           {drinks.map((drink) => (
             <DrinkContainer key={drink.id}>
               <Drink>
-                <img
+                <Image
+                  boxSize={200}
+                  borderRadius="full"
                   src={drink.image}
                   onClick={() => handleOpenModal(drink)}
                   alt=""
@@ -104,8 +107,6 @@ const DrinkContainer = styled.div`
   position: relative;
 
   img {
-    width: 200px;
-    height: 200px;
     object-fit: cover;
     border-radius: 50%;
     cursor: pointer;
