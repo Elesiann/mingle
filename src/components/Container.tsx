@@ -15,6 +15,7 @@ const Container = ({ children, backgroundColor }: ContainerProps) => {
 };
 
 const AppContainer = styled.section`
+  position: relative;
   width: 100%;
   height: 100%;
   max-width: 1200px;

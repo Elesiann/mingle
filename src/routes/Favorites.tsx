@@ -13,6 +13,7 @@ import { styled } from "styled-components";
 import { Heart, ShoppingCart, XCircle } from "@phosphor-icons/react";
 import { colors } from "../styles/colors";
 import { useCartUtils } from "../hooks/useCart";
+import EmptyFavorites from "../assets/images/empty-favorites.png";
 import { toast } from "react-toastify";
 import { useEffect, useState } from "react";
 import { Tooltip } from "react-tooltip";
@@ -41,6 +42,14 @@ const Favorites = () => {
     document.title = "Favoritos | Mingle";
   }, []);
 
+  const renderEmptyFavorites = () => (
+    <EmptyFavoritesContainer>
+      <h1>Nenhum favorito!</h1>
+      <img src={EmptyFavorites} alt="" />
+      <a href="/">Voltar ao início</a>
+    </EmptyFavoritesContainer>
+  );
+
   const renderMobileFavorites = () => {
     return (
       <MobileFavoritesContainer>
@@ -62,9 +71,9 @@ const Favorites = () => {
     );
   };
 
-  return (
-    <Container>
-      <Content>
+  const renderTable = () => (
+    <>
+      {favorites.length > 0 && (
         <div
           style={{
             textAlign: "center",
@@ -75,52 +84,60 @@ const Favorites = () => {
           <Heart color={colors.red} size={48} style={{ margin: "0 auto" }} />
           <h1>Seus favoritos</h1>
         </div>
-        {!isMobile ? (
-          <TableContainer>
-            <Table variant="simple">
-              <Thead>
-                <Tr>
-                  <Th>Produto</Th>
-                  <Th>Valor un.</Th>
-                  <Th></Th>
-                  <Th></Th>
-                </Tr>
-              </Thead>
-              <CustomTBody>
-                {favorites.map((item: ProductProps) => (
-                  <Tr key={item.id}>
-                    <Td>
-                      <div style={{ display: "flex" }}>
-                        <img src={item.image} alt={item.title} />
-                        <span>{item.title}</span>
-                      </div>
-                    </Td>
-                    <Td>R$ {item.price},00</Td>
-                    <Td>
-                      <button onClick={() => addToCart(item)}>
-                        Adicionar ao carrinho
-                      </button>
-                    </Td>
-                    <Td>
-                      <Tooltip id={item.id.toString()} />
-                      <XCircle
-                        data-tooltip-id={item.id}
-                        data-tooltip-content="Remover dos favoritos"
-                        data-tooltip-place="top"
-                        onClick={() => removeFromFavorites(item)}
-                        size={32}
-                        color={colors.red}
-                      />
-                    </Td>
-                  </Tr>
-                ))}
-              </CustomTBody>
-            </Table>
-          </TableContainer>
-        ) : (
-          renderMobileFavorites()
-        )}
-      </Content>
+      )}
+      <TableContainer>
+        <Table variant="simple">
+          <Thead>
+            <Tr>
+              <Th>Produto</Th>
+              <Th>Valor un.</Th>
+              <Th></Th>
+              <Th></Th>
+            </Tr>
+          </Thead>
+          <CustomTBody>
+            {favorites.map((item: ProductProps) => (
+              <Tr key={item.id}>
+                <Td>
+                  <div style={{ display: "flex" }}>
+                    <img src={item.image} alt={item.title} />
+                    <span>{item.title}</span>
+                  </div>
+                </Td>
+                <Td>R$ {item.price},00</Td>
+                <Td>
+                  <button onClick={() => addToCart(item)}>
+                    Adicionar ao carrinho
+                  </button>
+                </Td>
+                <Td>
+                  <Tooltip id={item.id.toString()} />
+                  <XCircle
+                    data-tooltip-id={item.id}
+                    data-tooltip-content="Remover dos favoritos"
+                    data-tooltip-place="top"
+                    onClick={() => removeFromFavorites(item)}
+                    size={32}
+                    color={colors.red}
+                  />
+                </Td>
+              </Tr>
+            ))}
+          </CustomTBody>
+        </Table>
+      </TableContainer>
+    </>
+  );
+
+  return (
+    <Container>
+      {favorites.length > 0 && !isMobile ? (
+        <Content>{renderTable()}</Content>
+      ) : isMobile ? (
+        renderMobileFavorites()
+      ) : (
+        renderEmptyFavorites()
+      )}
     </Container>
   );
 };
@@ -185,6 +202,8 @@ const MobileFavoritesContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  min-height: 100vh;
+  margin-top: 20vh;
 
   div {
     img {
@@ -243,6 +262,43 @@ const MobileFavoriteItem = styled.div`
   flex-direction: column;
   padding-bottom: 2rem;
   border-bottom: 1px solid var(--gray);
+`;
+
+const EmptyFavoritesContainer = styled.div`
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2rem;
+  margin: 0 auto;
+  border-radius: 0.5rem;
+  margin-top: 5%;
+
+  h1 {
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--dark);
+    margin-block: 2rem;
+  }
+
+  img {
+    width: 30svh;
+  }
+
+  a {
+    font-size: 1rem;
+    font-weight: bold;
+    color: var(--primary);
+    background-color: var(--firefly);
+    border-radius: 0.5rem;
+    padding: 0.5rem 1rem;
+
+    &:hover {
+      background-color: var(--gunmetal);
+    }
+  }
 `;
 
 export default Favorites;

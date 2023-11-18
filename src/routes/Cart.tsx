@@ -40,7 +40,7 @@ const Cart = () => {
     <EmptyCartContainer>
       <h1>Seu carrinho está vazio!</h1>
       <img src={EmptyCartImage} alt="" />
-      <a href="/products">Ver produtos</a>
+      <a href="/coffees">Ver produtos</a>
     </EmptyCartContainer>
   );
 
@@ -374,6 +374,7 @@ const Right = styled.div`
 `;
 
 const EmptyCartContainer = styled.div`
+  height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
