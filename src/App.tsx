@@ -13,6 +13,7 @@ import Favorites from "./routes/Favorites";
 import FindUs from "./routes/FindUs";
 import Homepage from "./routes/Homepage";
 import Product from "./routes/Product";
+import Footer from "./components/Footer";
 
 type AppProps = {
   showNavbar: boolean;
@@ -52,6 +53,7 @@ function App({ showNavbar }: AppProps) {
             />
           </AuthContext>
         </CartContext>
+        <Footer />
       </ChakraProvider>
     </>
   );
