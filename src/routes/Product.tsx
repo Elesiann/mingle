@@ -1,30 +1,37 @@
+import { Image } from "@chakra-ui/react";
 import { Heart } from "@phosphor-icons/react";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 import { css, styled } from "styled-components";
 import Button from "../components/Button";
 import Container from "../components/Container";
 import { ProductProps } from "../components/Product";
 import RelatedProducts from "../components/layouts/RelatedProducts";
 import { beatAnimation } from "../constants/animations";
+import { Products } from "../constants/products";
 import { useCartUtils } from "../hooks/useCart";
 import { colors } from "../styles/colors";
-import { toast } from "react-toastify";
-import { Image } from "@chakra-ui/react";
-import { Products } from "../constants/products";
 
 const Product = () => {
   const [product, setProduct] = useState<ProductProps>({} as ProductProps);
+  const [productClone, setProductClone] = useState({
+    quantity: 1
+  });
   const [heartAnimation, setHeartAnimation] = useState(false);
-  const { isFavorite, handleAddToFavorite, handleAddToCart } = useCartUtils();
+  const { isFavorite, handleAddToFavorite, handleAddToCart, isInCart } =
+    useCartUtils();
   const { id } = useParams();
 
   useEffect(() => {
     document.title = "Produtos | Mingle";
-    const getProduct = () =>
-      setProduct(
-        Products.find((product) => product.id === Number(id)) as ProductProps
-      );
+    const getProduct = () => {
+      const foundProduct = Products.find(
+        (product) => product.id === Number(id)
+      ) as ProductProps;
+      setProduct(foundProduct);
+      setProductClone({ ...foundProduct, quantity: 1 });
+    };
 
     getProduct();
   }, []);
@@ -39,16 +46,24 @@ const Product = () => {
           <h1>{product.title}</h1>
           <span>R$ {product.price},00</span>
           <p>{product.description}</p>
-          <Button
-            text="Adicionar ao carrinho"
-            hover={{
-              color: colors.gunmetal
-            }}
-            onClick={() => {
-              handleAddToCart(product);
-              toast.success("Produto adicionado ao carrinho!");
-            }}
-          />
+          <div>
+            <Button
+              text={`${
+                isInCart(product.id) ? "Remover do" : "Adicionar ao"
+              } carrinho`}
+              hover={{
+                color: colors.gunmetal
+              }}
+              onClick={() => {
+                handleAddToCart(productClone as ProductProps);
+                toast.success(
+                  `Produto ${
+                    isInCart(product.id) ? "removido do " : "adicionado ao "
+                  } carrinho!`
+                );
+              }}
+            />
+          </div>
           <div
             onClick={() => {
               handleAddToFavorite(product);
@@ -59,7 +74,8 @@ const Product = () => {
             <HeartIcon
               $animation={heartAnimation}
               $isfavorite={isFavorite(product.id)}
-            />{" "}
+              weight={isFavorite(product.id) ? "fill" : "regular"}
+            />
             {isFavorite(product.id) ? "Remover dos " : "Adicionar aos "}{" "}
             favoritos
           </div>

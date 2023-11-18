@@ -98,6 +98,7 @@ const Product = (product: ProductProps) => {
                   } carrinho`}
                   data-tooltip-place="top"
                   size={24}
+                  weight={product.isInCart ? "fill" : "regular"}
                 />
               </>
               <>
@@ -122,6 +123,7 @@ const Product = (product: ProductProps) => {
                   } favoritos`}
                   data-tooltip-place="top"
                   size={24}
+                  weight={product.isFavorite ? "fill" : "regular"}
                 />
               </>
             </ProductOptions>

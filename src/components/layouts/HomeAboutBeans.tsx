@@ -9,7 +9,7 @@ const HomeAboutBeans = () => {
         <Left>
           <h1>Grãos selecionados e da melhor qualidade</h1>
           <p>
-            Nóssos grãos são selecionados e torrados com a mais alta qualidade
+            Nossos grãos são selecionados e torrados com a mais alta qualidade
             para que você possa ter a melhor experiência possível ao saborear
             seu café.
           </p>

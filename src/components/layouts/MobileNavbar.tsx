@@ -1,16 +1,18 @@
 import { X } from "@phosphor-icons/react";
 import { styled } from "styled-components";
+import { capitalizeFirstName, getFromLocalStorage } from "../../utils/utils";
 
 interface MobileNavbarProps {
   onClose: () => void;
 }
 
 const MobileNavbar = (props: MobileNavbarProps) => {
+  const user = getFromLocalStorage("user");
   return (
     <MobileNavbarContainer>
       <ModalHeader>
         <div>
-          <h2>Olá, usuário</h2>
+          <h2>Olá, {capitalizeFirstName(user.displayName || "Usuário")}</h2>
         </div>
         <div onClick={props.onClose}>
           <X size={32} />

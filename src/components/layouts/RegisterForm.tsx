@@ -53,8 +53,9 @@ export default function RegisterForm(props: RegisterFormProps) {
 
   const handleGoogleLogin = async () => {
     props.setIsLoading(true);
-    await authContext.handleGoogleLogin();
-    props.setIsLoading(false);
+    await authContext.handleGoogleLogin().finally(() => {
+      props.setIsLoading(false);
+    });
   };
 
   return (

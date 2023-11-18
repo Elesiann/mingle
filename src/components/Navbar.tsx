@@ -1,5 +1,12 @@
 import { Button, Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
-import { CaretDown, List, SignIn, UserCircleGear } from "@phosphor-icons/react";
+import {
+  CaretDown,
+  Heart,
+  List,
+  ShoppingCart,
+  SignIn,
+  UserCircleGear
+} from "@phosphor-icons/react";
 import { isEmpty } from "lodash";
 import { useContext, useState } from "react";
 import styled from "styled-components";
@@ -17,14 +24,40 @@ const NavBar = () => {
   const [expandNavbar, setExpandNavbar] = useState(false);
   const user = getFromLocalStorage("user");
   const authContext = useContext(AuthContext);
+  const cartContext = useContext(CartContext);
   const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
 
   const renderUserData = () => {
     return (
-      <UserName onClick={() => setOpenNavbar("user")}>
-        {capitalizeFirstName(user.displayName)}
-        <UserCircleGear size={32} />
-      </UserName>
+      <UserDataContainer>
+        {renderCartAndFavorites()}
+        <UserName onClick={() => setOpenNavbar("user")}>
+          {capitalizeFirstName(user.displayName)}
+          <UserCircleGear size={32} />
+        </UserName>
+      </UserDataContainer>
+    );
+  };
+
+  const renderCartAndFavorites = () => {
+    const itemsInCart = cartContext.cart.length;
+    const itemsInFavorites = cartContext.favorites.length;
+
+    return (
+      <>
+        <NavItem>
+          <NavLink href="/cart">
+            <ShoppingCart size={32} />
+            {itemsInCart > 0 && <span>{itemsInCart}</span>}
+          </NavLink>
+        </NavItem>
+        <NavItem>
+          <NavLink href="/favorites">
+            <Heart size={32} />
+            {itemsInFavorites > 0 && <span>{itemsInFavorites}</span>}
+          </NavLink>
+        </NavItem>
+      </>
     );
   };
 
@@ -185,6 +218,7 @@ const CustomMenuItem = styled(MenuItem)`
 `;
 
 const NavItem = styled.li`
+  position: relative;
   display: flex;
   align-items: center;
   padding: 0.45rem;
@@ -244,6 +278,28 @@ const UserName = styled.div`
     border-radius: 4px;
     background-color: var(--gunmetal);
     color: var(--babyPowder);
+  }
+`;
+
+const UserDataContainer = styled.div`
+  display: flex;
+
+  span {
+    background-color: var(--green);
+    color: white;
+    border-radius: 50%;
+    position: absolute;
+    top: 0;
+    right: 0;
+    transform: translate(50%, -50%);
+    font-weight: bold;
+    font-size: 0.75rem;
+    width: 1.25rem;
+    height: 1.25rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
   }
 `;
 

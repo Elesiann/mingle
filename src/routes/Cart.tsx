@@ -161,10 +161,12 @@ const Cart = () => {
                   <TableContainer>
                     <Table>
                       <Thead>
-                        <Th>Produto</Th>
-                        <Th>Preço un.</Th>
-                        <Th>Qtde.</Th>
-                        <Th>Total</Th>
+                        <Tr>
+                          <Th>Produto</Th>
+                          <Th>Preço un.</Th>
+                          <Th>Qtde.</Th>
+                          <Th>Total</Th>
+                        </Tr>
                       </Thead>
                       <Tbody>
                         {cart.map((item: ProductProps) => (
@@ -173,7 +175,7 @@ const Cart = () => {
                               <img src={item.image} alt={item.title} />
                               <div>{item.title}</div>
                             </CustomCell>
-                            <Td>{item.price}</Td>
+                            <Td>R$ {item.price},00</Td>
                             <Td>
                               <div
                                 style={{
@@ -198,7 +200,7 @@ const Cart = () => {
                                 </button>
                               </div>
                             </Td>
-                            <Td>{item.price * (item.quantity ?? 1)}</Td>
+                            <Td>R$ {item.price * (item.quantity ?? 1)},00</Td>
                           </Tr>
                         ))}
                       </Tbody>

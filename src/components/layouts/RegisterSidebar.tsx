@@ -47,7 +47,7 @@ const RegisterSidebar = (props: SidebarProps) => {
       <Container $show={props.showSidebar}>
         <Signin>
           <h2>{isRegister ? "Registro" : "Entrar"}</h2>
-          <Close onClick={props.callback}>
+          <Close onClick={() => !isLoading && props.callback()}>
             <span>
               <X size={18} />
             </span>

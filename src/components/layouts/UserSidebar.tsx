@@ -1,4 +1,4 @@
-import { Heart, ShoppingCart, SignOut, X } from "@phosphor-icons/react";
+import { SignOut, X } from "@phosphor-icons/react";
 import { User } from "firebase/auth";
 import { styled } from "styled-components";
 import { capitalizeFirstName } from "../../utils/utils";
@@ -13,24 +13,9 @@ interface SidebarProps {
 }
 
 const UserSidebar = (props: SidebarProps) => {
-  const cartStorage = JSON.parse(localStorage.getItem("cart") || "[]");
-  const favoritesStorage = JSON.parse(
-    localStorage.getItem("favorites") || "[]"
-  );
-
   const renderUserCards = () => {
     return (
       <>
-        <UserCard href="/cart">
-          <ShoppingCart size={48} />
-          <h2>Seu carrinho</h2>
-          <span>{cartStorage.length}</span>
-        </UserCard>
-        <UserCard href="/favorites">
-          <Heart size={48} />
-          <h2>Seus favoritos</h2>
-          <span>{favoritesStorage.length}</span>
-        </UserCard>
         <UserCard onClick={props.callbacks.logout}>
           <SignOut size={48} />
           <h2>Sair</h2>
